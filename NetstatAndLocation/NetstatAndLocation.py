@@ -215,7 +215,9 @@ if IPsLocations.count != 0:
         items = items + \
             elementMapTempalte.format("Map", index)
 
-        body = body + itemTemplate.format(index, member.RemoteAddress, items)
+        body = body + \
+            itemTemplate.format(
+                index, (member.RemoteAddress + '-' + member.As + '-' + member.Country), items)
         bodyJS = bodyJS + varMaps.format(index) + ' , '
 
         index = index + 1
@@ -228,7 +230,7 @@ if IPsLocations.count != 0:
     for member in IPsLocations:
         bodyJS = bodyJS + \
             elemnentInitMapTemplate.format(
-                index, '{', '}', member.Latitud, member.Longitud, (member.As + member.RemoteAddress))
+                index, '{', '}', member.Latitud, member.Longitud, (member.As + '-' + member.RemoteAddress))
         index = index + 1
 
     bodyJS = bodyJS + ' }\n'
