@@ -185,7 +185,11 @@ if IPsLocations.count != 0:
     script_dir = os.path.dirname(__file__)
     rel_path = "report.html"
     abs_file_path = os.path.join(script_dir, rel_path)
-    f = open(abs_file_path, 'r+')
+    folder = os.path.join(os.path.expanduser('~'), "NABOO")
+    if os.path.exists(folder) != True :
+        os.mkdir(folder)
+    abs_file_path = os.path.join(folder,rel_path)
+    f = open(abs_file_path, 'w')
     body = ""
     index = 1
     bodyJS = "   var "
@@ -238,7 +242,7 @@ if IPsLocations.count != 0:
     templateBody = template.format(body, bodyJS)
     f.write(templateBody)
     f.close()
-
+    print("Path file:", abs_file_path)
 print("I finish the analysis, please check a file called report.html")
 # elif NameOS.lower() == "linux":
 
