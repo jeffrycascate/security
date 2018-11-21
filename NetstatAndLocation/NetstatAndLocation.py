@@ -185,13 +185,13 @@ if IPsLocations.count != 0:
     script_dir = os.path.dirname(__file__)
     rel_path = "report.html"
     abs_file_path = os.path.join(script_dir, rel_path)
-    f = open(abs_file_path, 'w')
+    f = open(abs_file_path, 'r+')
     body = ""
     index = 1
     bodyJS = "   var "
     for member in IPsLocations:
         items = ""
-        items = items + elementTempalte.format("Protocolo", member.ProgramName)
+        items = items + elementTempalte.format("Protocolo", member.Protocolo)
         items = items + elementTempalte.format("IP", member.RemoteAddress)
         items = items + elementTempalte.format("Status", member.Status)
         items = items + elementTempalte.format("PID", member.PID)
@@ -230,7 +230,7 @@ if IPsLocations.count != 0:
     for member in IPsLocations:
         bodyJS = bodyJS + \
             elemnentInitMapTemplate.format(
-                index, '{', '}', member.Latitud, member.Longitud, (member.As + '-' + member.RemoteAddress))
+                index, '{', '}', member.Latitud, member.Longitud, (member.As + ' ' + member.RemoteAddress))
         index = index + 1
 
     bodyJS = bodyJS + ' }\n'
