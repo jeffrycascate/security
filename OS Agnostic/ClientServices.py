@@ -47,8 +47,8 @@ class ThreadingExample(object):
                         dd = funcs[name]
                         varrr = dd()
 
-            except:
-                e = sys.exc_info()[0]
+            except Exception as e:
+
                 print("Ocurrio un error al ejecutar el archivo " +
                       self.ProcessRun.Path)
 
