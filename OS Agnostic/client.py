@@ -25,7 +25,7 @@ class Process(object):
 
 IPsLocations = []
 
-logPath = os.path.join(os.getcwd(), "Security", "OS Agnostic")
+logPath = os.path.join(os.getcwd())
 if not os.path.exists(logPath):
     os.mkdir(logPath)
 

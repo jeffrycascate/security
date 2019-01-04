@@ -240,7 +240,7 @@ if IPsLocations.count != 0:
     bodyJS = bodyJS + ' }\n'
 
     templateBody = template.format(body, bodyJS)
-    f.write(templateBody)
+    f.writelines(templateBody)
     f.close()
     print("Path file:", abs_file_path)
 print("I finish the analysis, please check a file called report.html")
