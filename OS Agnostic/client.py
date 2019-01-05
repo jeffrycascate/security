@@ -10,7 +10,7 @@ import json
 import requests
 import ftplib
 from datetime import datetime
-#import pymssql
+import pymssql
 from getmac import get_mac_address
 
 # configuration services
@@ -39,13 +39,54 @@ class Host(object):
     OS = OS()
 
     def __init__(self):
-        self.HostName = ""
+        self.Name = ""
         self.IPLocal = ""
         self.IPPublic = ""
         self.MacAddress = ""
         self.Jobs = []
         self.OS = OS()
 
+
+class ManagerThreadJob(object):
+    """ Threading example class
+    The run() method will be started and it will run in the background
+    until the application exits.
+    """
+    Job = object
+
+    def __init__(self, Job):
+        """ Constructor
+        :type interval: int
+        :param interval: Check interval, in seconds
+        """
+        self.interval = Job.Interval
+        self.Job = Job
+
+        thread = threading.Thread(target=self.run, args=())
+        thread.daemon = True                            # Daemonize thread
+        thread.start()                                  # Start the execution
+
+    def run(self):
+        """ Method that runs forever """
+        while True:
+            # Do something
+
+            #print("Star command that " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+            try:
+                funcs = {}
+                exec(self.Job.Body, {}, funcs)
+                for name in funcs:
+                    if name == self.Job.NameMethod:
+                        bodyFuntion = funcs[name]
+                        callResult = bodyFuntion()
+
+            except Exception as e:
+                print("Ocurrio un error al ejecutar el archivo ",
+                      self.Job.Path, ", Original Exception: ", str(e))
+                print("End command that " +
+                      datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            time.sleep(self.interval)
 
 class ManagerThreadJob(object):
     """ Threading example class
@@ -163,7 +204,7 @@ def ManagerOS():
 
 def ManagerHost():
     item = Host()
-    item.HostName = platform.uname()[1]
+    item.Name = platform.uname()[1]
     item.IPLocal =  IpLocal()
     item.IPPublic = IpPublic()
     item.MacAddress = MacAddress(item.IPLocal)
