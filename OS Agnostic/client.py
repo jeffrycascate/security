@@ -48,9 +48,7 @@ class ThreadingExample(object):
                         varrr = dd()
 
             except Exception as e:
-
-                print("Ocurrio un error al ejecutar el archivo " +
-                      self.ProcessRun.Path)
+                print("Ocurrio un error al ejecutar el archivo {0}, Original Exception \n {1}".format(self.ProcessRun.Path, str(e))
 
             print('End command that ' +
                   datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
@@ -59,23 +57,23 @@ class ThreadingExample(object):
 
 
 def Precess():
-    ProcessRuns = []
-    listOfFiles = os.listdir(os.path.join(os.getcwd(), "process"))
-    pattern = "*.py"
+    ProcessRuns=[]
+    listOfFiles=os.listdir(os.path.join(os.getcwd(), "process"))
+    pattern="*.py"
     for entry in listOfFiles:
         if fnmatch.fnmatch(entry, pattern):
             print(entry)
-            item = ProcessRun()
-            filePath = os.path.join(
+            item=ProcessRun()
+            filePath=os.path.join(
                 os.getcwd(), "process",  entry)
-            item.Body = open(filePath, "r").read()
-            item.Path = filePath
+            item.Body=open(filePath, "r").read()
+            item.Path=filePath
             ProcessRuns.append(item)
     return ProcessRuns
 
 
-process = Precess()
+process=Precess()
 for item in process:
-    example = ThreadingExample(item, 5)
+    example=ThreadingExample(item, 5)
 time.sleep(5000)
 print('Finished process')
