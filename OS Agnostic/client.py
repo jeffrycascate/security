@@ -1,51 +1,81 @@
-import os
-import psutil
+import threading
 import time
+import os
+import sys
+import fnmatch
+import psutil
+from datetime import datetime
 
 
-class Process(object):
+class ProcessRun(object):
     def __init__(self):
-        self.Protocolo = 0
-        self.RemoteAddress = ""
-        self.Status = ""
-        self.PID = ""
-        self.ProgramName = ""
-        self.As = ""
-        self.City = ""
-        self.Country = ""
-        self.CountryCode = ""
-        self.ISP = ""
-        self.Latitud = ""
-        self.Longitud = ""
-        self.Organization = ""
-        self.Region = ""
-        self.RegionName = ""
-        self.ZIP = ""
+        self.Body = ""
+        self.Path = ""
 
 
-IPsLocations = []
+class ThreadingExample(object):
+    """ Threading example class
+    The run() method will be started and it will run in the background
+    until the application exits.
+    """
+    ProcessRun = object
 
-logPath = os.path.join(os.getcwd())
-if not os.path.exists(logPath):
-    os.mkdir(logPath)
+    def __init__(self, ProcessRun, interval=5):
+        """ Constructor
+        :type interval: int
+        :param interval: Check interval, in seconds
+        """
+        self.interval = interval
+        self.ProcessRun = ProcessRun
 
-separator = "-" * 80
-format = "%7s %7s %12s %12s %30s, %s"
-format2 = "%7.4f %7.2f %12s %12s %30s, %s"
-while 1:
-    procs = list(psutil.process_iter())
-    procs = sorted(procs, key=lambda proc: proc.name())
-    proc_names = {}
-    for p in psutil.process_iter(attrs=['pid', 'name']):
-        proc_names[p.info['pid']] = p.info['name']
+        thread = threading.Thread(target=self.run, args=())
+        thread.daemon = True                            # Daemonize thread
+        thread.start()                                  # Start the execution
 
-    for proc in procs:
-        if proc.name() == "powershell.exe":
-            pid = proc.pid
-            for c in psutil.net_connections(kind='inet'):
-                if c.pid == pid:
-                    dd = c
+    def run(self):
+        """ Method that runs forever """
+        while True:
+            # Do something
 
-    print("Finished log update!")
-    time.sleep(300)
-    print("writing new log data!")
+            print('Star command that ' +
+                  datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            try:
+                funcs = {}
+                exec(self.ProcessRun.Body, {}, funcs)
+                for name in funcs:
+                    if name == "run":
+                        dd = funcs[name]
+                        varrr = dd()
+
+            except Exception as e:
+
+                print("Ocurrio un error al ejecutar el archivo " +
+                      self.ProcessRun.Path)
+
+            print('End command that ' +
+                  datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+            time.sleep(self.interval)
+
+
+def Precess():
+    ProcessRuns = []
+    listOfFiles = os.listdir(os.path.join(os.getcwd(), "process"))
+    pattern = "*.py"
+    for entry in listOfFiles:
+        if fnmatch.fnmatch(entry, pattern):
+            print(entry)
+            item = ProcessRun()
+            filePath = os.path.join(
+                os.getcwd(), "process",  entry)
+            item.Body = open(filePath, "r").read()
+            item.Path = filePath
+            ProcessRuns.append(item)
+    return ProcessRuns
+
+
+process = Precess()
+for item in process:
+    example = ThreadingExample(item, 5)
+time.sleep(5000)
+print('Finished process')
