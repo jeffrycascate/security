@@ -20,7 +20,7 @@ from ClientMySQL import *
 
 # region Configurations
 
-# configuration services
+# General 
 delimiter = '#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#'
 FolderNameProcess = "process"
 FolderProcessPath = os.path.join(os.getcwd(), FolderNameProcess)
@@ -288,8 +288,8 @@ def  ExistInServer(Host):
 
 def  CreateHost(Host):
     db = CreateInstance(Host= MySQLHost, User= MySQLUser, Password= MySQLPassword, Database= MySQLDatabase)
-    query = "INSERT INTO host( Name, IPLocal, IPPublic, MacAddress, State) " \
-                 " VALUES ('{0}', '{1}','{2}', '{3}', {4});".format(Host.Name, Host.IPLocal, Host.IPPublic, Host.MacAddress, 1)
+    query = "INSERT INTO host( Name, IPLocal, IPPublic, MacAddress, State, CreateDate, UpdateDate) " \
+                 " VALUES ('{0}', '{1}','{2}', '{3}', {4}, SYSDATE(), SYSDATE());".format(Host.Name, Host.IPLocal, Host.IPPublic, Host.MacAddress, 1)
     parameters = ()
     ExisteInServer = ExecuteCommand(db, query, parameters)
     db.close()

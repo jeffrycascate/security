@@ -1,4 +1,5 @@
 # region Imporst
+#pip install mysqlclient
 import MySQLdb
 import MySQLdb.cursors
 # endregion
