@@ -46,8 +46,8 @@ def run():
                     if c.pid == pid:
                         print(str(c))
 
-        print("Finished log update!")
-        print("writing new log data!")
+        print("Finished log update! 2")
+        print("writing new log data! 2")
 
         print("Called run")
         IsWork = True

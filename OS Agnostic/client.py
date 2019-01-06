@@ -1,3 +1,4 @@
+# region Imports
 import threading
 import time
 import os
@@ -8,14 +9,40 @@ import psutil
 import socket
 import json
 import requests
-import ftplib
-from datetime import datetime
 import pymssql
+from pathlib import Path
+from ftplib import FTP
+from datetime import datetime
 from getmac import get_mac_address
+from ClientMySQL import *
+
+# endregion
+
+# region Configurations
 
 # configuration services
 delimiter = '#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#'
 FolderNameProcess = "process"
+FolderProcessPath = os.path.join(os.getcwd(), FolderNameProcess)
+IsReset = False
+
+#MySQl Configuration
+MySQLHost = '186.177.106.36'
+MySQLUser = 'root'
+MySQLPassword = 'Jcv1821@t5'
+MySQLDatabase = 'osagnostic'
+  
+
+#region FPT Configuration
+FTPTIP = "192.168.0.14"
+FTPUser =  "Test"
+FTPPassword = "c12345"
+FTPPath = '/Configuration'
+#endregion
+
+# endregion
+
+# region Class DTOS
 
 
 class OS(object):
@@ -25,14 +52,12 @@ class OS(object):
         self.Release = ""
         self.Architecture = ""
 
-
 class Job(object):
     def __init__(self):
         self.Body = ""
         self.Path = ""
         self.NameMethod = ""
         self.Interval = 0
-
 
 class Host(object):
     Jobs = []
@@ -46,7 +71,6 @@ class Host(object):
         self.Jobs = []
         self.OS = OS()
 
-
 class ManagerThreadJob(object):
     """ Threading example class
     The run() method will be started and it will run in the background
@@ -71,7 +95,7 @@ class ManagerThreadJob(object):
         while True:
             # Do something
 
-            #print("Star command that " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            # print("Star command that " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
             try:
                 funcs = {}
@@ -88,7 +112,7 @@ class ManagerThreadJob(object):
                       datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
             time.sleep(self.interval)
 
-class ManagerThreadJob(object):
+class ManagerThreadJob1(object):
     """ Threading example class
     The run() method will be started and it will run in the background
     until the application exits.
@@ -112,7 +136,7 @@ class ManagerThreadJob(object):
         while True:
             # Do something
 
-            #print("Star command that " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            # print("Star command that " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
             try:
                 funcs = {}
@@ -128,18 +152,21 @@ class ManagerThreadJob(object):
                 print("End command that " +
                       datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
             time.sleep(self.interval)
+
+# endregion
+
+# region Methods
 
 
 def ManagerPrecess():
     Jobs = []
-    listOfFiles = os.listdir(os.path.join(os.getcwd(), FolderNameProcess))
+    listOfFiles = os.listdir(FolderProcessPath)
     pattern = "*.py"
     for entry in listOfFiles:
         if fnmatch.fnmatch(entry, pattern):
             print(entry)
             item = Job()
-            filePath = os.path.join(
-                os.getcwd(), FolderNameProcess,  entry)
+            filePath = os.path.join(FolderProcessPath,  entry)
 
             bodyRAW = open(filePath, "r").read()
             item.Body = bodyRAW.split(
@@ -157,6 +184,7 @@ def ManagerPrecess():
 def ManagerThreadProcess(process):
     print('')
 
+
 def IpPublic():
     result = "127.0.0.1"
     try:
@@ -171,6 +199,7 @@ def IpPublic():
               ", Original Exception: ", str(e))
     return result
 
+
 def IpLocal():
     result = "127.0.0.1"
     try:
@@ -183,10 +212,11 @@ def IpLocal():
               ", Original Exception: ", str(e))
     return result
 
+
 def MacAddress(ip):
     result = ""
-    try:       
-        result =  get_mac_address(ip=ip)
+    try:
+        result = get_mac_address(ip=ip)
     except Exception as e:
         print("Ocurrio un error al tratar de extrar la MacAddres ",
               ", Original Exception: ", str(e))
@@ -205,7 +235,7 @@ def ManagerOS():
 def ManagerHost():
     item = Host()
     item.Name = platform.uname()[1]
-    item.IPLocal =  IpLocal()
+    item.IPLocal = IpLocal()
     item.IPPublic = IpPublic()
     item.MacAddress = MacAddress(item.IPLocal)
     # OS
@@ -214,9 +244,74 @@ def ManagerHost():
     return item
 
 
+def ManagerFTPCheckUpdates():
+    result = False
+    try:
+        ftp = FTP(FTPTIP)
+        ftp.login(FTPUser, FTPPassword)
+        ftp.cwd(FTPPath)
+        ftp.retrlines('LIST')
+        filenames = []
+        ftp.retrlines('NLST', filenames.append)
+        for filename in filenames:
+            datetimeftp = ftp.sendcmd('MDTM ' + filename)
+            pathFile = os.path.join(FolderProcessPath, filename)
+            my_file = Path(pathFile)
+            if my_file.is_file():
+                datetimepc = os.path.getmtime(
+                    os.path.join(FolderProcessPath, filename))
+                modifiedTimeFtp = datetime.strptime(
+                    datetimeftp[4:], "%Y%m%d%H%M%S").strftime("%d %b %Y %H:%M:%S")
+                modifiedTimePc = datetime.fromtimestamp(
+                    datetimepc).strftime("%d %b %Y %H:%M:%S")
+                if modifiedTimeFtp > modifiedTimePc:
+                    with open( pathFile, 'wb' ) as file :
+                        ftp.retrbinary('RETR %s' % filename, file.write)
+                    result = True
+            else:
+                with open( pathFile, 'wb' ) as file :
+                    ftp.retrbinary('RETR %s' % filename, file.write)
+                result = True
+        ftp.quit()
+    except Exception as e:
+        print("Ocurrio un error al tratar de extrar la ip local ",
+              ", Original Exception: ", str(e))
+    return result
+
+def  ExistInServer(Host):
+    db = CreateInstance(Host= MySQLHost, User= MySQLUser, Password= MySQLPassword, Database= MySQLDatabase)
+    query = "select ID from host where Name = '{0}'".format(Host.Name)
+    parameters = ()
+    ExisteInServer = ExecuteCommand(db, query, parameters)
+    db.close()
+    return ExisteInServer
+
+def  CreateHost(Host):
+    db = CreateInstance(Host= MySQLHost, User= MySQLUser, Password= MySQLPassword, Database= MySQLDatabase)
+    query = "INSERT INTO host( Name, IPLocal, IPPublic, MacAddress, State) " \
+                 " VALUES ('{0}', '{1}','{2}', '{3}', {4});".format(Host.Name, Host.IPLocal, Host.IPPublic, Host.MacAddress, 1)
+    parameters = ()
+    ExisteInServer = ExecuteCommand(db, query, parameters)
+    db.close()
+    return ExisteInServer
+
+def ManagerHostDataAccess(Host):
+    ExisteInServer = ExistInServer(Host)
+    if ExisteInServer.Successfully:
+       if ExisteInServer.RowCount == 0:
+           result = CreateHost(Host)
+       else:
+           print('dd')
+    db.close()
+
+# endregion
+
+
 if __name__ == "__main__":
+    ManagerFTPCheckUpdates()
     print('Starting process')
     ItemHost = ManagerHost()
+    ManagerHostDataAccess(ItemHost)
     process = ManagerPrecess()
     for item in process:
         example = ManagerThreadJob(item)
