@@ -1,4 +1,5 @@
 psutil
+pathlib
 mysqlclient
 requests
 getmac
