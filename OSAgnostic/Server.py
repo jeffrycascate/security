@@ -11,7 +11,7 @@ filePathConfiguration = os.path.join(os.getcwd(), "Server.config")
 interval = 30
 
 #MySQl Configuration
-MySQLHost = '186.177.106.36'
+MySQLHost = 'localhost'
 MySQLUser = 'root'
 MySQLPassword = 'Jcv1821@t5'
 MySQLDatabase = 'osagnostic'
