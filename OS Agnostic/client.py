@@ -20,140 +20,30 @@ from ClientMySQL import *
 
 # region Configurations
 
-# General 
+# General
 delimiter = '#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#'
 FolderNameProcess = "process"
 FolderProcessPath = os.path.join(os.getcwd(), FolderNameProcess)
+filePathConfiguration = os.path.join(os.getcwd(), "Client.config")
 IsReset = False
+IsRun = True
 
-#MySQl Configuration
+# MySQl Configuration
 MySQLHost = '186.177.106.36'
 MySQLUser = 'root'
 MySQLPassword = 'Jcv1821@t5'
 MySQLDatabase = 'osagnostic'
-  
 
-#region FPT Configuration
+
+# region FPT Configuration
 FTPTIP = "192.168.0.14"
-FTPUser =  "Test"
+FTPUser = "Test"
 FTPPassword = "c12345"
 FTPPath = '/Configuration'
-#endregion
+# endregion
 
 # endregion
 
-# region Class DTOS
-
-
-class OS(object):
-    def __init__(self):
-        self.Name = ""
-        self.System = ""
-        self.Release = ""
-        self.Architecture = ""
-
-class Job(object):
-    def __init__(self):
-        self.Body = ""
-        self.Path = ""
-        self.NameMethod = ""
-        self.Interval = 0
-
-class Host(object):
-    Jobs = []
-    OS = OS()
-
-    def __init__(self):
-        self.Name = ""
-        self.IPLocal = ""
-        self.IPPublic = ""
-        self.MacAddress = ""
-        self.Jobs = []
-        self.OS = OS()
-
-class ManagerThreadJob(object):
-    """ Threading example class
-    The run() method will be started and it will run in the background
-    until the application exits.
-    """
-    Job = object
-
-    def __init__(self, Job):
-        """ Constructor
-        :type interval: int
-        :param interval: Check interval, in seconds
-        """
-        self.interval = Job.Interval
-        self.Job = Job
-
-        thread = threading.Thread(target=self.run, args=())
-        thread.daemon = True                            # Daemonize thread
-        thread.start()                                  # Start the execution
-
-    def run(self):
-        """ Method that runs forever """
-        while True:
-            # Do something
-
-            # print("Star command that " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-
-            try:
-                funcs = {}
-                exec(self.Job.Body, {}, funcs)
-                for name in funcs:
-                    if name == self.Job.NameMethod:
-                        bodyFuntion = funcs[name]
-                        callResult = bodyFuntion()
-
-            except Exception as e:
-                print("Ocurrio un error al ejecutar el archivo ",
-                      self.Job.Path, ", Original Exception: ", str(e))
-                print("End command that " +
-                      datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-            time.sleep(self.interval)
-
-class ManagerThreadJob1(object):
-    """ Threading example class
-    The run() method will be started and it will run in the background
-    until the application exits.
-    """
-    Job = object
-
-    def __init__(self, Job):
-        """ Constructor
-        :type interval: int
-        :param interval: Check interval, in seconds
-        """
-        self.interval = Job.Interval
-        self.Job = Job
-
-        thread = threading.Thread(target=self.run, args=())
-        thread.daemon = True                            # Daemonize thread
-        thread.start()                                  # Start the execution
-
-    def run(self):
-        """ Method that runs forever """
-        while True:
-            # Do something
-
-            # print("Star command that " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-
-            try:
-                funcs = {}
-                exec(self.Job.Body, {}, funcs)
-                for name in funcs:
-                    if name == self.Job.NameMethod:
-                        bodyFuntion = funcs[name]
-                        callResult = bodyFuntion()
-
-            except Exception as e:
-                print("Ocurrio un error al ejecutar el archivo ",
-                      self.Job.Path, ", Original Exception: ", str(e))
-                print("End command that " +
-                      datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-            time.sleep(self.interval)
-
-# endregion
 
 # region Methods
 
@@ -173,8 +63,10 @@ def ManagerPrecess():
                 delimiter)[1]
             configurationRAW = bodyRAW.split(
                 delimiter)[0].replace('#', '').split(';')
-            item.NameMethod = configurationRAW[0]
-            item.Interval = int(configurationRAW[1])
+            item.Code = int(configurationRAW[0])
+            item.NameMethod = configurationRAW[1]
+            item.Interval = int(configurationRAW[2])
+            item.Name = configurationRAW[3]
 
             item.Path = filePath
             Jobs.append(item)
@@ -265,11 +157,11 @@ def ManagerFTPCheckUpdates():
                 modifiedTimePc = datetime.fromtimestamp(
                     datetimepc).strftime("%d %b %Y %H:%M:%S")
                 if modifiedTimeFtp > modifiedTimePc:
-                    with open( pathFile, 'wb' ) as file :
+                    with open(pathFile, 'wb') as file:
                         ftp.retrbinary('RETR %s' % filename, file.write)
                     result = True
             else:
-                with open( pathFile, 'wb' ) as file :
+                with open(pathFile, 'wb') as file:
                     ftp.retrbinary('RETR %s' % filename, file.write)
                 result = True
         ftp.quit()
@@ -278,42 +170,238 @@ def ManagerFTPCheckUpdates():
               ", Original Exception: ", str(e))
     return result
 
-def  ExistInServer(Host):
-    db = CreateInstance(Host= MySQLHost, User= MySQLUser, Password= MySQLPassword, Database= MySQLDatabase)
+
+def ManagerHostExistInServer(Host):
+    db = CreateInstance(Host=MySQLHost, User=MySQLUser,
+                        Password=MySQLPassword, Database=MySQLDatabase)
     query = "select ID from host where Name = '{0}'".format(Host.Name)
     parameters = ()
     ExisteInServer = ExecuteCommand(db, query, parameters)
     db.close()
     return ExisteInServer
 
-def  CreateHost(Host):
-    db = CreateInstance(Host= MySQLHost, User= MySQLUser, Password= MySQLPassword, Database= MySQLDatabase)
-    query = "INSERT INTO host( Name, IPLocal, IPPublic, MacAddress, State, CreateDate, UpdateDate) " \
-                 " VALUES ('{0}', '{1}','{2}', '{3}', {4}, SYSDATE(), SYSDATE());".format(Host.Name, Host.IPLocal, Host.IPPublic, Host.MacAddress, 1)
+
+def ManagerHostCreate(Host):
+    db = CreateInstance(Host=MySQLHost, User=MySQLUser,
+                        Password=MySQLPassword, Database=MySQLDatabase)
+    query = "INSERT INTO host( Name, IPLocal, IPPublic, MacAddress, State, CreateDate, UpdateDate, OSName, OSSystem, OSRelease, OSArchitecture ) " \
+        " VALUES ('{0}', '{1}','{2}', '{3}', {4}, SYSDATE(), SYSDATE(), '{5}', '{6}', '{7}', '{8}' );".format(
+            Host.Name, Host.IPLocal, Host.IPPublic, Host.MacAddress, 1, Host.OS.Name, Host.OS.System, Host.OS.Release, Host.OS.Architecture)
     parameters = ()
     ExisteInServer = ExecuteCommand(db, query, parameters)
     db.close()
     return ExisteInServer
 
+
 def ManagerHostDataAccess(Host):
-    ExisteInServer = ExistInServer(Host)
+    ExisteInServer = ManagerHostExistInServer(Host)
     if ExisteInServer.Successfully:
-       if ExisteInServer.RowCount == 0:
-           result = CreateHost(Host)
-       else:
-           print('dd')
+        if ExisteInServer.RowCount == 0:
+            result = ManagerHostCreate(Host)
+        else:
+            print('dd')
+
+def ManagerHostState(Host, State):
+    db = CreateInstance(Host=MySQLHost, User=MySQLUser,
+                        Password=MySQLPassword, Database=MySQLDatabase)
+
+    value = 0
+    if State == True:
+        value = 1  
+
+    query = "UPDATE host SET STATE = b'{0}' WHERE NAME = '{1}'".format(value, Host.Name)
+    parameters = ()
+    ExisteInServer = ExecuteCommand(db, query, parameters)
     db.close()
+    return ExisteInServer
+
+# endregion
+
+
+
+# region Class DTOS
+
+
+class OS(object):
+    def __init__(self):
+        self.Name = ""
+        self.System = ""
+        self.Release = ""
+        self.Architecture = ""
+
+
+class Job(object):
+    def __init__(self):
+        self.Body = ""
+        self.Path = ""
+        self.NameMethod = ""
+        self.Interval = 0
+        self.Code = 0
+        self.Name = ""
+
+
+class Host(object):
+    Jobs = []
+    OS = OS()
+
+    def __init__(self):
+        self.Name = ""
+        self.IPLocal = ""
+        self.IPPublic = ""
+        self.MacAddress = ""
+        self.Jobs = []
+        self.OS = OS()
+
+
+class ManagerThreadJob(object):
+    """ Threading example class
+    The run() method will be started and it will run in the background
+    until the application exits.
+    """
+    Job = object
+
+    def __init__(self, Job):
+        """ Constructor
+        :type interval: int
+        :param interval: Check interval, in seconds
+        """
+        self.interval = Job.Interval
+        self.Job = Job
+
+        thread = threading.Thread(target=self.run, args=())
+        thread.daemon = True                            # Daemonize thread
+        thread.start()                                  # Start the execution
+
+    def run(self):
+        """ Method that runs forever """
+        while True:
+            # Do something
+
+            # print("Star command that " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+            try:
+                funcs = {}
+                exec(self.Job.Body, {}, funcs)
+                for name in funcs:
+                    if name == self.Job.NameMethod:
+                        bodyFuntion = funcs[name]
+                        callResult = bodyFuntion()
+
+            except Exception as e:
+                print("Ocurrio un error al ejecutar el archivo ",
+                      self.Job.Path, ", Original Exception: ", str(e))
+                print("End command that " +
+                      datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            time.sleep(self.interval)
+
+
+class ManagerThreadJob1(object):
+    """ Threading example class
+    The run() method will be started and it will run in the background
+    until the application exits.
+    """
+    Job = object
+
+    def __init__(self, Job):
+        """ Constructor
+        :type interval: int
+        :param interval: Check interval, in seconds
+        """
+        self.interval = Job.Interval
+        self.Job = Job
+
+        thread = threading.Thread(target=self.run, args=())
+        thread.daemon = True                            # Daemonize thread
+        thread.start()                                  # Start the execution
+
+    def run(self):
+        """ Method that runs forever """
+        while True:
+            # Do something
+
+            # print("Star command that " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+            try:
+                funcs = {}
+                exec(self.Job.Body, {}, funcs)
+                for name in funcs:
+                    if name == self.Job.NameMethod:
+                        bodyFuntion = funcs[name]
+                        callResult = bodyFuntion()
+
+            except Exception as e:
+                print("Ocurrio un error al ejecutar el archivo ",
+                      self.Job.Path, ", Original Exception: ", str(e))
+                print("End command that " +
+                      datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            time.sleep(self.interval)
+
+
+class ManagerThreadHostLive(Host):
+    """ Threading example class
+    The run() method will be started and it will run in the background
+    until the application exits.
+    """
+    Host = Host
+
+    def __init__(self, Host):
+        """ Constructor
+        :type interval: int
+        :param interval: Check interval, in seconds
+        """
+        self.interval = 5
+        self.Host = Host
+
+        thread = threading.Thread(target=self.run, args=())
+        thread.daemon = True                            # Daemonize thread
+        thread.start()                                  # Start the execution
+
+    def run(self):
+        """ Method that runs forever """
+        while True:
+
+            try:
+                ManagerHostState(self.Host, True)
+
+            except Exception as e:
+                print("Ocurrio un error al Update live, Original Exception: ", str(e))
+
+            time.sleep(self.interval)
+
 
 # endregion
 
 
 if __name__ == "__main__":
-    ManagerFTPCheckUpdates()
     print('Starting process')
+    ManagerFTPCheckUpdates()
     ItemHost = ManagerHost()
     ManagerHostDataAccess(ItemHost)
-    process = ManagerPrecess()
-    for item in process:
-        example = ManagerThreadJob(item)
-    time.sleep(5000)
-    print('End process')
+
+    ManagerThreadHostLive(ItemHost)
+
+    #process = ManagerPrecess()
+    # for item in process:
+    #    example = ManagerThreadJob(item)
+    # time.sleep(5000)
+    #print('End process')
+
+    bodyRAW = open(filePathConfiguration, "r").read()
+
+    if bodyRAW == '0':
+        IsRun = False
+
+    while IsRun:
+        bodyRAW = open(filePathConfiguration, "r").read()
+        if bodyRAW == '0':
+            IsRun = False
+            print("Stop services client that " +
+                  datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        else:
+            print("Executed - Update Hosts " +
+                  datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        time.sleep(30)
+        print("Executed to client" +
+              datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    print("Exit program to client" +
+          datetime.now().strftime('%Y-%m-%d %H:%M:%S'))

@@ -7,7 +7,8 @@ from ClientMySQL import *
 #endregion
 
 #region Configuration
-filePath = os.path.join(os.getcwd(), "Server.config")
+filePathConfiguration = os.path.join(os.getcwd(), "Server.config")
+interval = 30
 
 #MySQl Configuration
 MySQLHost = '186.177.106.36'
@@ -29,13 +30,13 @@ def  UpdateHosts():
 
 if __name__ == "__main__":
     IsRun = True
-    bodyRAW = open(filePath, "r").read()
+    bodyRAW = open(filePathConfiguration, "r").read()
     
     if bodyRAW == '0':
         IsRun = False
 
     while IsRun:
-        bodyRAW = open(filePath, "r").read()
+        bodyRAW = open(filePathConfiguration, "r").read()
         if bodyRAW == '0':
             IsRun = False
             print("Stop services that " +
@@ -44,7 +45,7 @@ if __name__ == "__main__":
             result = UpdateHosts()
             print("Executed - Update Hosts " +
                       datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-        time.sleep(10)
+        time.sleep(interval)
         print("Executed to " +
                       datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     print("Exit program to " +
