@@ -191,16 +191,15 @@ def ManagerHostCreate(Host):
     if result.Successfully:
         Host.Id = result.LastRowId
     db.close()
-    return ExisteInServer
 
 
 def ManagerHostDataAccess(Host):
     ExisteInServer = ManagerHostExistInServer(Host)
     if ExisteInServer.Successfully:
         if ExisteInServer.RowCount == 0:
-            result = ManagerHostCreate(Host)
+            ManagerHostCreate(Host)
         else:
-            print('dd')
+            Host.Id = int(ExisteInServer.Rows[0][0])
 
 
 def ManagerHostState(Host, State):
