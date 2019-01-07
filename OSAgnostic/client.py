@@ -92,7 +92,7 @@ def IpPublic():
 
 
 def IpLocal():
-    result = "127.0.0.1"
+    result = ""
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
@@ -101,6 +101,13 @@ def IpLocal():
     except Exception as e:
         print("Ocurrio un error al tratar de extrar la ip local ",
               ", Original Exception: ", str(e))
+    if result == "":
+        try:
+            result = socket.gethostbyname(socket.gethostname())
+            s.close()
+        except Exception as e:
+            print("Ocurrio un error al tratar de extrar la ip local ",
+                  ", Original Exception: ", str(e))
     return result
 
 
