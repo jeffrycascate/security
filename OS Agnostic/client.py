@@ -201,22 +201,23 @@ def ManagerHostDataAccess(Host):
         else:
             print('dd')
 
+
 def ManagerHostState(Host, State):
     db = CreateInstance(Host=MySQLHost, User=MySQLUser,
                         Password=MySQLPassword, Database=MySQLDatabase)
 
     value = 0
     if State == True:
-        value = 1  
+        value = 1
 
-    query = "UPDATE host SET STATE = b'{0}' WHERE NAME = '{1}'".format(value, Host.Name)
+    query = "UPDATE host SET STATE = b'{0}' WHERE NAME = '{1}'".format(
+        value, Host.Name)
     parameters = ()
     ExisteInServer = ExecuteCommand(db, query, parameters)
     db.close()
     return ExisteInServer
 
 # endregion
-
 
 
 # region Class DTOS
