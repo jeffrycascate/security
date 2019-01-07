@@ -187,6 +187,16 @@ def ManagerHostExistInServer(Host):
     return ExisteInServer
 
 
+def ManagerJobsExistInServer(Host, Job):
+    db = CreateInstance(Host=MySQLHost, User=MySQLUser,
+                        Password=MySQLPassword, Database=MySQLDatabase)
+    query = "select ID from host where Name = '{0}'".format(Host.Name)
+    parameters = ()
+    ExisteInServer = ExecuteCommand(db, query, parameters)
+    db.close()
+    return ExisteInServer
+
+
 def ManagerHostCreate(Host):
     db = CreateInstance(Host=MySQLHost, User=MySQLUser,
                         Password=MySQLPassword, Database=MySQLDatabase)
@@ -207,7 +217,18 @@ def ManagerHostDataAccess(Host):
             ManagerHostCreate(Host)
         else:
             Host.Id = int(ExisteInServer.Rows[0][0])
+        ManagerJobsDataAccess(Host)
 
+
+def ManagerJobsDataAccess(Host):
+    for item in Host.Jobs:
+        ExisteInServer = ManagerJobsExistInServer(Host, item)
+        if ExisteInServer.Successfully:
+            if ExisteInServer.RowCount == 0:
+                ManagerHostCreate(Host)
+            else:
+                item.Id = int(ExisteInServer.Rows[0][0])
+           
 
 def ManagerHostState(Host, State):
     db = CreateInstance(Host=MySQLHost, User=MySQLUser,
@@ -240,6 +261,7 @@ class OS(object):
 
 class Job(object):
     def __init__(self):
+        self.Id = 1
         self.Body = ""
         self.Path = ""
         self.NameMethod = ""
