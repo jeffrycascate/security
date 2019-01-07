@@ -9,7 +9,6 @@ import psutil
 import socket
 import json
 import requests
-import pymssql
 from pathlib import Path
 from ftplib import FTP
 from datetime import datetime
@@ -188,7 +187,9 @@ def ManagerHostCreate(Host):
         " VALUES ('{0}', '{1}','{2}', '{3}', {4}, SYSDATE(), SYSDATE(), '{5}', '{6}', '{7}', '{8}' );".format(
             Host.Name, Host.IPLocal, Host.IPPublic, Host.MacAddress, 1, Host.OS.Name, Host.OS.System, Host.OS.Release, Host.OS.Architecture)
     parameters = ()
-    ExisteInServer = ExecuteCommand(db, query, parameters)
+    result = ExecuteCommand(db, query, parameters)
+    if result.Successfully:
+        Host.Id = result.LastRowId
     db.close()
     return ExisteInServer
 
@@ -246,6 +247,7 @@ class Host(object):
     OS = OS()
 
     def __init__(self):
+        self.Id = 0
         self.Name = ""
         self.IPLocal = ""
         self.IPPublic = ""

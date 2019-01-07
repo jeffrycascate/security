@@ -1,1 +1,4 @@
 mysqlclient
+requests
+getmac
+freeze
