@@ -179,27 +179,6 @@ def ManagerFTPCheckUpdates():
                     ftp.retrbinary('RETR %s' % filename, file.write)
                 result = True
         ftp.quit()
-
-        # for filename in filenames:
-        #     datetimeftp = ftp.sendcmd('MDTM ' + filename)
-        #     pathFile = os.path.join(FolderProcessPath, filename)
-        #     my_file = Path(pathFile)
-        #     if my_file.is_file():
-        #         datetimepc = os.path.getmtime(
-        #             os.path.join(FolderProcessPath, filename))
-        #         modifiedTimeFtp = datetime.strptime(
-        #             datetimeftp[4:], "%Y%m%d%H%M%S").strftime("%d %b %Y %H:%M:%S")
-        #         modifiedTimePc = datetime.fromtimestamp(
-        #             datetimepc).strftime("%d %b %Y %H:%M:%S")
-        #         if modifiedTimeFtp > modifiedTimePc:
-        #             with open(pathFile, 'wb') as file:
-        #                 ftp.retrbinary('RETR %s' % filename, file.write)
-        #             result = True
-        #     else:
-        #         with open(pathFile, 'wb') as file:
-        #             ftp.retrbinary('RETR %s' % filename, file.write)
-        #         result = True
-        # ftp.quit()
     except Exception as e:
         print("Error ManagerFTPCheckUpdates ",
               ", Original Exception: ", str(e))
