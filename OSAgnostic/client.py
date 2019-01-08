@@ -451,6 +451,13 @@ class ManagerThreadByJob(Host, Job):
                 print("Se llama el proceso {0} cada {1}".format(
                     self.Job.Name, self.Job.Interval))
 
+                funcs = {}
+                exec(self.Job.Body, {}, funcs)
+                for name in funcs:
+                    if name == self.Job.NameMethod:
+                        bodyFuntion = funcs[name]
+                        callResult = bodyFuntion()
+
             except Exception as e:
                 print("Ocurrio un error al Update live, Original Exception: ", str(e))
 
