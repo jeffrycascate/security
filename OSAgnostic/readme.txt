@@ -8,4 +8,7 @@
     
     si falla debes de tener instalado este 
         apt install libmysqlclient-dev python-mysqldb
+
+TODO:
+    https://pypi.org/project/PyMsgBox/ - para mensages
 	

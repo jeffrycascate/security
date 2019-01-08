@@ -15,6 +15,7 @@ from ftplib import FTP
 from datetime import datetime
 from getmac import get_mac_address
 from ClientMySQL import *
+from pymsgbox import *
 
 
 # endregion
@@ -442,14 +443,26 @@ class ManagerThreads(Host):
         thread.start()                                  # Start the execution
 
     def run(self):
-        """ Method that runs forever """
+        """ Esta seccion es solo la primera vez que se hace para que queden activos lo thread de pocessos """
+        for item in Host.Jobs:
+            ItemThread = item
 
         while True:
             try:
                 if ManagerFTPCheckUpdates():
-                    print("Reiniciar seccio")
+                    print(
+                        "**************************************************************************")
+                    print("Reiniciar manager thread - {0}".format(
+                        datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+                    print(
+                        "**************************************************************************")
                 else:
-                    print("Sin reinicio")
+                    print(
+                        "**************************************************************************")
+                    print("Sin Reiniciar manager thread - {0}".format(
+                        datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+                    print(
+                        "**************************************************************************")
 
             except Exception as e:
                 print("Ocurrio un error al Update live, Original Exception: ", str(e))
