@@ -192,8 +192,8 @@ def ManagerJobsExistInServer(Host, Job):
 def ManagerJobCreate(Host, Job):
     db = CreateInstance(Host=MySQLHost, User=MySQLUser,
                         Password=MySQLPassword, Database=MySQLDatabase)
-    query = "Insert Into Job( Code, Name, Interval, HostId, OSType, CreateDate, UpdateDate ) " \
-                    " VALUES( {0},'{1}',   {2},    {3},  '{4}' , SYSDATE(), SYSDATE());".format(
+    query = "Insert Into Job( `Code`, `Name`, `Interval`, `HostId`, `OSType`, `CreateDate`, `UpdateDate` ) " \
+                    " VALUES( '{0}','{1}',   {2},    {3},  '{4}' , SYSDATE(), SYSDATE());".format(
             Job.Code, Job.Name, Job.Interval,  Host.Id , Job.OSType )
     parameters = ()
     result = ExecuteCommand(db, query, parameters)
@@ -243,6 +243,7 @@ def ManagerJobsDataAccess(Host):
                 ManagerJobCreate(Host, item)
             else:
                 item.Id = int(ExisteInServer.Rows[0][0])
+            ##Make last load
 
 
 def ManagerHostState(Host, State):
