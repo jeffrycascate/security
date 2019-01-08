@@ -154,6 +154,17 @@ def ManagerFTPCheckUpdates():
         ftp.retrlines('LIST')
         filenames = []
         ftp.retrlines('NLST', filenames.append)
+
+        lines = []
+        ftp.dir(FTPPath, lines.append)
+
+        for line in lines:
+            tokens = line.split(maxsplit=9)
+            name = tokens[8]
+            time_str = tokens[5] + " " + tokens[6] + " " + tokens[7]
+            time = parser.parse(time_str)
+            print(name + ' - ' + str(time))
+
         for filename in filenames:
             datetimeftp = ftp.sendcmd('MDTM ' + filename)
             pathFile = os.path.join(FolderProcessPath, filename)
