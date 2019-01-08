@@ -423,11 +423,57 @@ class ManagerThreadHostLive(Host):
             time.sleep(self.interval)
 
 
+class ManagerThreadByJob(Host, Job):
+
+    Host = Host
+    Job = Job
+
+    def __init__(self, Host, Job):
+        """ Constructor
+        :type interval: int
+        :param interval: Check interval, in seconds
+        """
+        self.interval = Job.Interval
+        self.Host = Host
+        self.Job = Job
+        self.IsRun = True
+
+        self.thread = threading.Thread(target=self.run,  args=(
+        ), name="Name={0}, Interval={1}".format(Job.Name, Job.Interval))
+        self.thread.daemon = True
+        self.shutdown_flag = threading.Event()
+        self.thread.start()
+
+    def run(self):
+        """ Esta seccion es solo la primera vez que se hace para que queden activos lo thread de pocessos """
+        while self.IsRun:
+            try:
+                print("Se llama el proceso {0} cada {1}".format(
+                    self.Job.Name, self.Job.Interval))
+
+            except Exception as e:
+                print("Ocurrio un error al Update live, Original Exception: ", str(e))
+
+            time.sleep(self.interval)
+        print("El proceso esta terminado")
+        self.shutdown_flag.set()
+
+
+def ThreadsMake(Host):
+    result = []
+    for item in Host.Jobs:
+        ItemThread = ManagerThreadByJob(Host, item)
+        result.append(ItemThread)
+    return result
+
+
+def ThreadsStop(Pools):
+    for item in Pools:
+        item.IsRun = False
+
+
 class ManagerThreads(Host):
-    """ Threading example class
-    The run() method will be started and it will run in the background
-    until the application exits.
-    """
+
     Host = Host
 
     def __init__(self, Host):
@@ -438,14 +484,13 @@ class ManagerThreads(Host):
         self.interval = 5
         self.Host = Host
 
-        thread = threading.Thread(target=self.run, args=())
-        thread.daemon = True                            # Daemonize thread
-        thread.start()                                  # Start the execution
+        self.thread = threading.Thread(target=self.run, args=())
+        self.thread.daemon = True                           # Daemonize thread
+        self.thread.start()                                 # Start the execution
 
     def run(self):
         """ Esta seccion es solo la primera vez que se hace para que queden activos lo thread de pocessos """
-        for item in Host.Jobs:
-            ItemThread = item
+        Pools = ThreadsMake(self.Host)
 
         while True:
             try:
@@ -456,6 +501,12 @@ class ManagerThreads(Host):
                         datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
                     print(
                         "**************************************************************************")
+
+                    self.Host = ManagerHost()
+                    ThreadsStop(Pools)
+                    ManagerHostDataAccess(self.Host)
+                    Pools = ThreadsMake(self.Host)
+
                 else:
                     print(
                         "**************************************************************************")
@@ -471,7 +522,6 @@ class ManagerThreads(Host):
 
 
 # endregion
-
 
 if __name__ == "__main__":
     print('Starting process')

@@ -1,6 +1,6 @@
-#2;run;5;Job 2;Windows
+#2;run;2;Job 2;Windows
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
-#dasdfas
+#ddd
 class Process(object):
     def __init__(self):
         self.Protocolo = 0
