@@ -4,3 +4,4 @@ mysqlclient
 requests
 getmac
 freeze
+py-dateutil

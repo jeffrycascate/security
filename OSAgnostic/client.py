@@ -9,11 +9,13 @@ import psutil
 import socket
 import json
 import requests
+from dateutil import parser
 from pathlib import Path
 from ftplib import FTP
 from datetime import datetime
 from getmac import get_mac_address
 from ClientMySQL import *
+
 
 # endregion
 
@@ -35,7 +37,7 @@ MySQLDatabase = 'osagnostic'
 
 
 # region FPT Configuration
-FTPTIP = "192.168.0.14"
+FTPTIP = "186.177.106.36"
 FTPUser = "Test"
 FTPPassword = "c12345"
 FTPPath = '/Configuration'
@@ -193,8 +195,8 @@ def ManagerJobCreate(Host, Job):
     db = CreateInstance(Host=MySQLHost, User=MySQLUser,
                         Password=MySQLPassword, Database=MySQLDatabase)
     query = "Insert Into Job( `Code`, `Name`, `Interval`, `HostId`, `OSType`, `CreateDate`, `UpdateDate` ) " \
-                    " VALUES( '{0}','{1}',   {2},    {3},  '{4}' , SYSDATE(), SYSDATE());".format(
-            Job.Code, Job.Name, Job.Interval,  Host.Id , Job.OSType )
+        " VALUES( '{0}','{1}',   {2},    {3},  '{4}' , SYSDATE(), SYSDATE());".format(
+            Job.Code, Job.Name, Job.Interval,  Host.Id, Job.OSType)
     parameters = ()
     result = ExecuteCommand(db, query, parameters)
     if result.Successfully:
@@ -243,7 +245,7 @@ def ManagerJobsDataAccess(Host):
                 ManagerJobCreate(Host, item)
             else:
                 item.Id = int(ExisteInServer.Rows[0][0])
-            ##Make last load
+            # Make last load
 
 
 def ManagerHostState(Host, State):
@@ -365,10 +367,6 @@ class ManagerThreadJob1(object):
     def run(self):
         """ Method that runs forever """
         while True:
-            # Do something
-
-            # print("Star command that " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-
             try:
                 funcs = {}
                 exec(self.Job.Body, {}, funcs)
@@ -409,7 +407,44 @@ class ManagerThreadHostLive(Host):
         while True:
 
             try:
-                ManagerHostState(self.Host, True)
+                result = ManagerHostState(self.Host, True)
+                if result.Successfully:
+                    print(
+                        "A signal is sent to the active server for the host '{0}', to: {1}".format(self.Host.Name,  datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+            except Exception as e:
+                print("Ocurrio un error al Update live, Original Exception: ", str(e))
+
+            time.sleep(self.interval)
+
+
+class ManagerThreads(Host):
+    """ Threading example class
+    The run() method will be started and it will run in the background
+    until the application exits.
+    """
+    Host = Host
+
+    def __init__(self, Host):
+        """ Constructor
+        :type interval: int
+        :param interval: Check interval, in seconds
+        """
+        self.interval = 5
+        self.Host = Host
+
+        thread = threading.Thread(target=self.run, args=())
+        thread.daemon = True                            # Daemonize thread
+        thread.start()                                  # Start the execution
+
+    def run(self):
+        """ Method that runs forever """
+
+        while True:
+            try:
+                if ManagerFTPCheckUpdates():
+                    print("Reiniciar seccio")
+                else:
+                    print("Sin reinicio")
 
             except Exception as e:
                 print("Ocurrio un error al Update live, Original Exception: ", str(e))
@@ -428,11 +463,13 @@ if __name__ == "__main__":
 
     ManagerThreadHostLive(ItemHost)
 
-    #process = ManagerPrecess()
+    ManagerThreads(ItemHost)
+
+    # process = ManagerPrecess()
     # for item in process:
     #    example = ManagerThreadJob(item)
     # time.sleep(5000)
-    #print('End process')
+    # print('End process')
 
     bodyRAW = open(filePathConfiguration, "r").read()
 
