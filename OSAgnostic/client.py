@@ -66,6 +66,7 @@ def ManagerPrecess():
             item.NameMethod = configurationRAW[1]
             item.Interval = int(configurationRAW[2])
             item.Name = configurationRAW[3]
+            item.OSType = configurationRAW[4].rstrip()
 
             item.Path = filePath
             Jobs.append(item)
@@ -172,25 +173,39 @@ def ManagerFTPCheckUpdates():
                 result = True
         ftp.quit()
     except Exception as e:
-        print("Ocurrio un error al tratar de extrar la ip local ",
+        print("Error ManagerFTPCheckUpdates ",
               ", Original Exception: ", str(e))
     return result
 
 
-def ManagerHostExistInServer(Host):
+def ManagerJobsExistInServer(Host, Job):
     db = CreateInstance(Host=MySQLHost, User=MySQLUser,
                         Password=MySQLPassword, Database=MySQLDatabase)
-    query = "select ID from host where Name = '{0}'".format(Host.Name)
+    query = "Select ID From Job Where Code = '{0}' and HostId = {1}".format(
+        Job.Code, Host.Id)
     parameters = ()
     ExisteInServer = ExecuteCommand(db, query, parameters)
     db.close()
     return ExisteInServer
 
 
-def ManagerJobsExistInServer(Host, Job):
+def ManagerJobCreate(Host, Job):
     db = CreateInstance(Host=MySQLHost, User=MySQLUser,
                         Password=MySQLPassword, Database=MySQLDatabase)
-    query = "select ID from host where Name = '{0}'".format(Host.Name)
+    query = "Insert Into Job( Code, Name, Interval, HostId, OSType, CreateDate, UpdateDate ) " \
+                    " VALUES( {0},'{1}',   {2},    {3},  '{4}' , SYSDATE(), SYSDATE());".format(
+            Job.Code, Job.Name, Job.Interval,  Host.Id , Job.OSType )
+    parameters = ()
+    result = ExecuteCommand(db, query, parameters)
+    if result.Successfully:
+        Job.Id = result.LastRowId
+    db.close()
+
+
+def ManagerHostExistInServer(Host):
+    db = CreateInstance(Host=MySQLHost, User=MySQLUser,
+                        Password=MySQLPassword, Database=MySQLDatabase)
+    query = "Select ID From Host Where Name = '{0}'".format(Host.Name)
     parameters = ()
     ExisteInServer = ExecuteCommand(db, query, parameters)
     db.close()
@@ -200,7 +215,7 @@ def ManagerJobsExistInServer(Host, Job):
 def ManagerHostCreate(Host):
     db = CreateInstance(Host=MySQLHost, User=MySQLUser,
                         Password=MySQLPassword, Database=MySQLDatabase)
-    query = "INSERT INTO host( Name, IPLocal, IPPublic, MacAddress, State, CreateDate, UpdateDate, OSName, OSSystem, OSRelease, OSArchitecture ) " \
+    query = "INSERT INTO Host( Name, IPLocal, IPPublic, MacAddress, State, CreateDate, UpdateDate, OSName, OSSystem, OSRelease, OSArchitecture ) " \
         " VALUES ('{0}', '{1}','{2}', '{3}', {4}, SYSDATE(), SYSDATE(), '{5}', '{6}', '{7}', '{8}' );".format(
             Host.Name, Host.IPLocal, Host.IPPublic, Host.MacAddress, 1, Host.OS.Name, Host.OS.System, Host.OS.Release, Host.OS.Architecture)
     parameters = ()
@@ -225,10 +240,10 @@ def ManagerJobsDataAccess(Host):
         ExisteInServer = ManagerJobsExistInServer(Host, item)
         if ExisteInServer.Successfully:
             if ExisteInServer.RowCount == 0:
-                ManagerHostCreate(Host)
+                ManagerJobCreate(Host, item)
             else:
                 item.Id = int(ExisteInServer.Rows[0][0])
-           
+
 
 def ManagerHostState(Host, State):
     db = CreateInstance(Host=MySQLHost, User=MySQLUser,
@@ -268,6 +283,7 @@ class Job(object):
         self.Interval = 0
         self.Code = 0
         self.Name = ""
+        self.OSType = ""
 
 
 class Host(object):
