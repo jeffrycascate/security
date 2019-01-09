@@ -262,6 +262,20 @@ def ManagerJobsDataAccess(Host):
             # Make last load
 
 
+def ManagerTraceDataAccess(JobsId, trace):
+    if trace != None:
+        print("")
+
+
+        #ExisteInServer = ManagerJobsExistInServer(Host, item)
+        #if ExisteInServer.Successfully:
+        #    if ExisteInServer.RowCount == 0:
+        #        ManagerJobCreate(Host, item)
+        #    else:
+        #        item.Id = int(ExisteInServer.Rows[0][0])
+        #    # Make last load
+
+
 def ManagerHostState(Host, State):
     db = CreateInstance(Host=MySQLHost, User=MySQLUser,
                         Password=MySQLPassword, Database=MySQLDatabase)
@@ -431,7 +445,6 @@ class ManagerThreadHostLive(Host):
 
             time.sleep(self.interval)
 
-
 class ManagerThreadByJob(Host, Job):
 
     Host = Host
@@ -466,6 +479,13 @@ class ManagerThreadByJob(Host, Job):
                     if name == self.Job.NameMethod:
                         bodyFuntion = funcs[name]
                         callResult = bodyFuntion()
+                        if callResult.Successfully:
+                            print(
+                                 "Ejecucion del modulo {0}", self.Job.Name)
+                            for item in callResult.Items:
+                               varr = ManagerTraceDataAccess(self.Job.Id, item)
+                        else:
+                            print("Fallo la ejecucion del modulo {0}", self.Job.Name)
 
             except Exception as e:
                 print("Ocurrio un error al Update live, Original Exception: ", str(e))
