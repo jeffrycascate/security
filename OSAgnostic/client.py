@@ -9,13 +9,12 @@ import psutil
 import socket
 import json
 import requests
-from dateutil import parser
+from dateutil.parser import *
 from pathlib import Path
 from ftplib import FTP
 from datetime import datetime
 from getmac import get_mac_address
 from ClientMySQL import *
-from pymsgbox import *
 
 
 # endregion
@@ -64,21 +63,21 @@ def ManagerPrecess():
             item.Body = bodyRAW.split(
                 delimiter)[1]
             configurationRAW = bodyRAW.split(
-                delimiter)[0].replace('#', '').split(';')
+                delimiter)[0].replace('#', '').split('@@')
             item.Code = int(configurationRAW[0])
-            item.NameMethod = configurationRAW[1]
+            item.NameMethod = configurationRAW[1].rstrip()
             item.Interval = int(configurationRAW[2])
-            item.Name = configurationRAW[3]
+            item.Name = configurationRAW[3].rstrip()
             item.OSType = configurationRAW[4].rstrip()
+            Targets = configurationRAW[5].rstrip()
+            if Targets != 'None':
+                for itemTarget in Targets.split(';'):
+                    item.Targets.append(itemTarget)
 
             item.Path = filePath
-            Jobs.append(item)
+            if item.OSType.lower() in platform.system().lower():
+                Jobs.append(item)   
     return Jobs
-
-
-def ManagerThreadProcess(process):
-    print('')
-
 
 def IpPublic():
     result = "127.0.0.1"
@@ -146,9 +145,11 @@ def ManagerHost():
     return item
 
 
-def ManagerFTPCheckUpdates():
+def ManagerFTPCheckUpdates(IsFirts):
     result = False
     try:
+        if 'CCSERVER' == platform.uname()[1]:
+            FTPTIP = "192.168.0.14"
         ftp = FTP(FTPTIP)
         ftp.login(FTPUser, FTPPassword)
         ftp.cwd(FTPPath)
@@ -162,23 +163,29 @@ def ManagerFTPCheckUpdates():
         for line in lines:
             tokens = line.split(maxsplit=9)
             filename = tokens[8]
-            time_str = tokens[5] + " " + tokens[6] + " " + tokens[7]
-            modifiedTimeFtp = parser.parse(time_str)
-
             pathFile = os.path.join(FolderProcessPath, filename)
-            my_file = Path(pathFile)
-            if my_file.is_file():
-                datetimepc = os.path.getmtime(
-                    os.path.join(FolderProcessPath, filename))
-                datetimepc = datetime.fromtimestamp(datetimepc)
-                if modifiedTimeFtp > datetimepc:
+            if IsFirts == False:
+                time_str = tokens[5] + " " + tokens[6] + " " + tokens[7]
+                modifiedTimeFtp = parse(time_str)
+
+               
+                my_file = Path(pathFile)
+                if my_file.is_file():
+                    datetimepc = os.path.getmtime(
+                        os.path.join(FolderProcessPath, filename))
+                    datetimepc = datetime.fromtimestamp(datetimepc)
+                    if modifiedTimeFtp > datetimepc:
+                        with open(pathFile, 'wb') as file:
+                            ftp.retrbinary('RETR %s' % filename, file.write)
+                        result = True
+                else:
                     with open(pathFile, 'wb') as file:
                         ftp.retrbinary('RETR %s' % filename, file.write)
                     result = True
             else:
                 with open(pathFile, 'wb') as file:
-                    ftp.retrbinary('RETR %s' % filename, file.write)
-                result = True
+                        ftp.retrbinary('RETR %s' % filename, file.write)
+                result = True    
         ftp.quit()
     except Exception as e:
         print("Error ManagerFTPCheckUpdates ",
@@ -293,6 +300,7 @@ class Job(object):
         self.Code = 0
         self.Name = ""
         self.OSType = ""
+        self.Targets = []
 
 
 class Host(object):
@@ -501,7 +509,7 @@ class ManagerThreads(Host):
 
         while True:
             try:
-                if ManagerFTPCheckUpdates():
+                if ManagerFTPCheckUpdates(False):
                     print(
                         "**************************************************************************")
                     print("Reiniciar manager thread - {0}".format(
@@ -523,7 +531,7 @@ class ManagerThreads(Host):
                         "**************************************************************************")
 
             except Exception as e:
-                print("Ocurrio un error al Update live, Original Exception: ", str(e))
+                print("Ocurrio un error ManagerThreads, Original Exception: ", str(e))
 
             time.sleep(self.interval)
 
@@ -532,8 +540,12 @@ class ManagerThreads(Host):
 
 if __name__ == "__main__":
     print('Starting process')
-    ManagerFTPCheckUpdates()
+    
+
+    ManagerFTPCheckUpdates(True)
+
     ItemHost = ManagerHost()
+
     ManagerHostDataAccess(ItemHost)
 
     ManagerThreadHostLive(ItemHost)
