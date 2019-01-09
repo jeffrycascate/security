@@ -75,8 +75,11 @@ def ManagerPrecess():
                     item.Targets.append(itemTarget)
 
             item.Path = filePath
-            if item.OSType.lower() in platform.system().lower():
-                Jobs.append(item)   
+            if item.OSType == '*':
+                Jobs.append(item)
+            else:
+                 if item.OSType.lower() in platform.system().lower():
+                     Jobs.append(item)
     return Jobs
 
 def IpPublic():
@@ -148,8 +151,6 @@ def ManagerHost():
 def ManagerFTPCheckUpdates(IsFirts):
     result = False
     try:
-        if 'CCSERVER' == platform.uname()[1]:
-            FTPTIP = "192.168.0.14"
         ftp = FTP(FTPTIP)
         ftp.login(FTPUser, FTPPassword)
         ftp.cwd(FTPPath)
@@ -540,7 +541,9 @@ class ManagerThreads(Host):
 
 if __name__ == "__main__":
     print('Starting process')
-    
+
+    if 'CCSERVER' == platform.uname()[1]:
+            FTPTIP = "192.168.0.14"
 
     ManagerFTPCheckUpdates(True)
 

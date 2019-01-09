@@ -1,4 +1,4 @@
-#3@@run@@2@@Job 3@@Win@@CCSERVER
+#3@@run@@2@@Job 3@@*@@CCSERVER
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
 # Isaac  h Isaac asdfasdfas asda
 class Process(object):
