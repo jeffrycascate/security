@@ -471,7 +471,7 @@ class ManagerThreadByJob(Host, Job):
                 print("Ocurrio un error al Update live, Original Exception: ", str(e))
 
             time.sleep(self.interval)
-        print("El proceso esta terminado")
+        print("Jobs '{0}' is being stopped".format(self.Job.Name) )
         self.shutdown_flag.set()
 
 
