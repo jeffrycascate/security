@@ -1,6 +1,6 @@
-# 1@@run@@5@@Job 1@@*@@None
+# 1@@run@@5@@Job 1@@*@@*
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
-
+# [Code][Methodo By Run][Interval][Job Name][OS Type][Target Machine] #
 from enum import Enum
 
 
@@ -67,7 +67,7 @@ def run():
                 item.CreateDate = datetime.now()
                 item.URL = ""
                 item.IP = ""
-                item.Message = "Se detecto la ejecucion de un processo:'{0}' con el pid='{1}'".format(
+                item.Message = "Se detecto la ejecucion de un processo:'{0}' con el pid='{1}' Pata queso ".format(
                     proc.name(),  proc.pid)
 
                 item.Severity = Severity.Critical

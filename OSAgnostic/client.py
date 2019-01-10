@@ -64,23 +64,24 @@ def ManagerPrecess():
                 delimiter)[1]
             configurationRAW = bodyRAW.split(
                 delimiter)[0].replace('#', '').split('@@')
+
             item.Code = int(configurationRAW[0])
             item.NameMethod = configurationRAW[1].rstrip()
             item.Interval = int(configurationRAW[2])
             item.Name = configurationRAW[3].rstrip()
             item.OSType = configurationRAW[4].rstrip()
+
             Targets = configurationRAW[5].rstrip()
-            if Targets != 'None':
+            if Targets != '*':
                 for itemTarget in Targets.split(';'):
                     item.Targets.append(itemTarget)
+            else:
+                item.Targets = []
 
             item.Path = filePath
-            if item.OSType == '*':
-                Jobs.append(item)
-            else:
-                 if item.OSType.lower() in platform.system().lower():
-                     Jobs.append(item)
+            Jobs.append(item)
     return Jobs
+
 
 def IpPublic():
     result = "127.0.0.1"
@@ -138,13 +139,35 @@ def ManagerOS():
 
 def ManagerHost():
     item = Host()
-    item.Name = platform.uname()[1]
+    item.Name = platform.uname()[1].rstrip()
     item.IPLocal = IpLocal()
     item.IPPublic = IpPublic()
     item.MacAddress = MacAddress(item.IPLocal)
     # OS
     item.OS = ManagerOS()
-    item.Jobs = ManagerPrecess()
+
+    TemporalJobs = ManagerPrecess()
+    for itemJob in TemporalJobs:
+        AllowSO = False
+        AllowTarget = False
+
+        # Check if job is that allowed by host for type system operation
+        if itemJob.OSType == '*':
+            AllowSO = True
+        else:
+            if itemJob.OSType.lower() in item.OS.Name.lower():
+                AllowSO = True
+
+        # Check if job is that allowed by name host
+        if len(itemJob.Targets) == 0:
+            AllowTarget = True
+        else:
+            for itemTarger in itemJob.Targets:
+                if itemTarger.lower() == item.Name.lower():
+                    AllowTarget = True
+        if AllowSO and AllowTarget:
+            item.Jobs .append(itemJob)
+
     return item
 
 
@@ -169,7 +192,6 @@ def ManagerFTPCheckUpdates(IsFirts):
                 time_str = tokens[5] + " " + tokens[6] + " " + tokens[7]
                 modifiedTimeFtp = parse(time_str)
 
-               
                 my_file = Path(pathFile)
                 if my_file.is_file():
                     datetimepc = os.path.getmtime(
@@ -185,8 +207,8 @@ def ManagerFTPCheckUpdates(IsFirts):
                     result = True
             else:
                 with open(pathFile, 'wb') as file:
-                        ftp.retrbinary('RETR %s' % filename, file.write)
-                result = True    
+                    ftp.retrbinary('RETR %s' % filename, file.write)
+                result = True
         ftp.quit()
     except Exception as e:
         print("Error ManagerFTPCheckUpdates ",
@@ -262,18 +284,20 @@ def ManagerJobsDataAccess(Host):
             # Make last load
 
 
-def ManagerTraceDataAccess(JobsId, trace):
-    if trace != None:
-        print("")
-
-
-        #ExisteInServer = ManagerJobsExistInServer(Host, item)
-        #if ExisteInServer.Successfully:
-        #    if ExisteInServer.RowCount == 0:
-        #        ManagerJobCreate(Host, item)
-        #    else:
-        #        item.Id = int(ExisteInServer.Rows[0][0])
-        #    # Make last load
+def ManagerTraceDataAccess(JobId, trace):
+    try:
+        if trace != None:
+            db = CreateInstance(Host=MySQLHost, User=MySQLUser,
+                                Password=MySQLPassword, Database=MySQLDatabase)
+            query = "INSERT INTO trace(`Message`, `Severity`, `Successfully`, `URL`, `CreateDate`, `JobId`) VALUES (%s, %s, %s , %s, %s, %s);"
+            parameters = (trace.Message, trace.Severity.name,
+                          trace.Successfully, trace.URL, trace.CreateDate, JobId)
+            result = ExecuteCommand(db, query, parameters)
+            if result.Successfully:
+                Host.Id = result.LastRowId
+            db.close()
+    except Exception as e:
+        print("Ocurrio un error ManagerTraceDataAccess, Original Exception: ", str(e))
 
 
 def ManagerHostState(Host, State):
@@ -445,6 +469,7 @@ class ManagerThreadHostLive(Host):
 
             time.sleep(self.interval)
 
+
 class ManagerThreadByJob(Host, Job):
 
     Host = Host
@@ -481,17 +506,18 @@ class ManagerThreadByJob(Host, Job):
                         callResult = bodyFuntion()
                         if callResult.Successfully:
                             print(
-                                 "Ejecucion del modulo {0}", self.Job.Name)
+                                "Ejecucion del modulo {0}", self.Job.Name)
                             for item in callResult.Items:
-                               varr = ManagerTraceDataAccess(self.Job.Id, item)
+                                ManagerTraceDataAccess(self.Job.Id, item)
                         else:
-                            print("Fallo la ejecucion del modulo {0}", self.Job.Name)
+                            print(
+                                "Fallo la ejecucion del modulo {0}".format(self.Job.Name))
 
             except Exception as e:
                 print("Ocurrio un error al Update live, Original Exception: ", str(e))
 
             time.sleep(self.interval)
-        print("Jobs '{0}' is being stopped".format(self.Job.Name) )
+        print("Jobs '{0}' is being stopped".format(self.Job.Name))
         self.shutdown_flag.set()
 
 
@@ -563,7 +589,7 @@ if __name__ == "__main__":
     print('Starting process')
 
     if 'CCSERVER' == platform.uname()[1]:
-            FTPTIP = "192.168.0.14"
+        FTPTIP = "192.168.0.14"
 
     ManagerFTPCheckUpdates(True)
 
