@@ -178,9 +178,12 @@ def ManagerHost():
 
 def ManagerFTPCheckUpdates(IsFirts):
     result = False
-    ftp = FTP(FTPTIP)
-    ftp.login(FTPUser, FTPPassword)
+    ftp = ""
+
     try:
+        ftp = FTP(FTPTIP)
+        ftp.login(FTPUser, FTPPassword)
+        ftp.set_pasv(False)
         ftp.cwd(FTPPath)
         ftp.retrlines('LIST')
         filenames = []
@@ -216,7 +219,6 @@ def ManagerFTPCheckUpdates(IsFirts):
                 result = True
         ftp.quit()
     except Exception as e:
-        ftp.quit()
         print("Error ManagerFTPCheckUpdates ",
               ", Original Exception: ", str(e))
     return result
@@ -295,9 +297,9 @@ def ManagerTraceDataAccess(JobId, trace):
         if trace != None:
             db = CreateInstance(Host=MySQLHost, User=MySQLUser,
                                 Password=MySQLPassword, Database=MySQLDatabase)
-            query = "INSERT INTO trace(`Message`, `Severity`, `Successfully`, `URL`, `CreateDate`, `JobId`) VALUES (%s, %s, %s , %s, %s, %s);"
+            query = "INSERT INTO trace(`Message`, `Severity`, `Successfully`, `URL`, `CreateDate`, `IP`, `JobId`) VALUES (%s, %s, %s , %s, %s, %s, %s);"
             parameters = (trace.Message, trace.Severity.name,
-                          trace.Successfully, trace.URL, trace.CreateDate, JobId)
+                          trace.Successfully, trace.URL, trace.CreateDate, trace.IP, JobId)
             result = ExecuteCommand(db, query, parameters)
             if result.Successfully:
                 Host.Id = result.LastRowId
