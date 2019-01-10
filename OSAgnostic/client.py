@@ -22,6 +22,7 @@ from ClientMySQL import *
 # region Configurations
 
 # General
+BLUE = '34m'
 delimiter = '#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#'
 FolderNameProcess = "process"
 FolderProcessPath = os.path.join(os.getcwd(), FolderNameProcess)
@@ -47,6 +48,10 @@ FTPPath = '/Configuration'
 
 
 # region Methods
+
+def display_colored_text(color, text):
+    colored_text = f"\033[{color}{text}\033[00m"
+    return colored_text
 
 
 def ManagerPrecess():
@@ -173,9 +178,9 @@ def ManagerHost():
 
 def ManagerFTPCheckUpdates(IsFirts):
     result = False
+    ftp = FTP(FTPTIP)
+    ftp.login(FTPUser, FTPPassword)
     try:
-        ftp = FTP(FTPTIP)
-        ftp.login(FTPUser, FTPPassword)
         ftp.cwd(FTPPath)
         ftp.retrlines('LIST')
         filenames = []
@@ -211,6 +216,7 @@ def ManagerFTPCheckUpdates(IsFirts):
                 result = True
         ftp.quit()
     except Exception as e:
+        ftp.quit()
         print("Error ManagerFTPCheckUpdates ",
               ", Original Exception: ", str(e))
     return result
@@ -506,7 +512,7 @@ class ManagerThreadByJob(Host, Job):
                         callResult = bodyFuntion()
                         if callResult.Successfully:
                             print(
-                                "Ejecucion del modulo {0}", self.Job.Name)
+                                "Ejecucion del modulo {0}".format(self.Job.Name))
                             for item in callResult.Items:
                                 ManagerTraceDataAccess(self.Job.Id, item)
                         else:
@@ -584,6 +590,7 @@ class ManagerThreads(Host):
 
 
 # endregion
+
 
 if __name__ == "__main__":
     print('Starting process')
