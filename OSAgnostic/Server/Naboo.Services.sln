@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Naboo.Services", "Naboo.Services\Naboo.Services.csproj", "{168D4FFA-76D2-4CCF-A442-FA52A649F605}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Naboo.DataAccess", "Naboo.DataAccess\Naboo.DataAccess.csproj", "{324AB53F-8EC0-4D7E-975E-F76D9F359BD0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{168D4FFA-76D2-4CCF-A442-FA52A649F605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{168D4FFA-76D2-4CCF-A442-FA52A649F605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{168D4FFA-76D2-4CCF-A442-FA52A649F605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{168D4FFA-76D2-4CCF-A442-FA52A649F605}.Release|Any CPU.Build.0 = Release|Any CPU
+		{324AB53F-8EC0-4D7E-975E-F76D9F359BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{324AB53F-8EC0-4D7E-975E-F76D9F359BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{324AB53F-8EC0-4D7E-975E-F76D9F359BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{324AB53F-8EC0-4D7E-975E-F76D9F359BD0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B294E8C4-B11E-4847-90C1-3C1823BE5C33}
+	EndGlobalSection
+EndGlobal
