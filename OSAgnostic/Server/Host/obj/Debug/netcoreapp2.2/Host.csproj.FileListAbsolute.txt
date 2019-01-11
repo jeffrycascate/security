@@ -13,3 +13,4 @@ C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\bin\De
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.dll
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.pdb
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.csproj.CopyComplete
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.csprojAssemblyReference.cache
