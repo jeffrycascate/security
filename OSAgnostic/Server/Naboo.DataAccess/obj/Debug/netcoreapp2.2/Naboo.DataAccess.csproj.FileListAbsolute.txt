@@ -9,3 +9,13 @@ C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\o
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\obj\Debug\netcoreapp2.2\Naboo.DataAccess.dll
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\obj\Debug\netcoreapp2.2\Naboo.DataAccess.pdb
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\obj\Debug\netcoreapp2.2\Naboo.DataAccess.csprojAssemblyReference.cache
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\bin\Debug\netcoreapp2.2\Naboo.DataAccess.deps.json
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\bin\Debug\netcoreapp2.2\Naboo.DataAccess.runtimeconfig.json
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\bin\Debug\netcoreapp2.2\Naboo.DataAccess.runtimeconfig.dev.json
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\bin\Debug\netcoreapp2.2\Naboo.DataAccess.dll
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\bin\Debug\netcoreapp2.2\Naboo.DataAccess.pdb
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\obj\Debug\netcoreapp2.2\Naboo.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\obj\Debug\netcoreapp2.2\Naboo.DataAccess.AssemblyInfoInputs.cache
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\obj\Debug\netcoreapp2.2\Naboo.DataAccess.AssemblyInfo.cs
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\obj\Debug\netcoreapp2.2\Naboo.DataAccess.dll
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\obj\Debug\netcoreapp2.2\Naboo.DataAccess.pdb

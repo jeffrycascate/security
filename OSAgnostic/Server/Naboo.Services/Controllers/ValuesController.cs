@@ -10,11 +10,12 @@ namespace Naboo.Services.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<Naboo.DataAccess.Model.Host>> Get()
         {
-            var dbContext = new Naboo.DataAccess.Model.OSAgnosticContext();
+            var dbContext = new Naboo.DataAccess.Model.OSAgnosticContext("server=186.177.106.36;database=osagnostic;user=root;pwd=Jcv1821@t5");
             var hosts = dbContext.Host.ToList();
             return hosts;
         }

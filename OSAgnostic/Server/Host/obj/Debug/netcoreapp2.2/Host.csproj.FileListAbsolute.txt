@@ -1,0 +1,15 @@
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.deps.json
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.runtimeconfig.json
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.runtimeconfig.dev.json
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.dll
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.csproj.CoreCompileInputs.cache
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.RazorAssemblyInfo.cache
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.RazorAssemblyInfo.cs
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.AssemblyInfoInputs.cache
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.AssemblyInfo.cs
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.RazorTargetAssemblyInfo.cache
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.pdb
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.Views.dll
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.dll
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.pdb
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.csproj.CopyComplete

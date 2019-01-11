@@ -6,8 +6,10 @@ namespace Naboo.DataAccess.Model
 {
     public partial class OSAgnosticContext : DbContext
     {
-        public OSAgnosticContext()
+        public string ConnectionString;
+        public OSAgnosticContext(string connectionString)
         {
+            this.ConnectionString = connectionString;
         }
 
         public OSAgnosticContext(DbContextOptions<OSAgnosticContext> options)
@@ -23,7 +25,7 @@ namespace Naboo.DataAccess.Model
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("server=localhost;database=osagnostic;user=root;pwd=Jcv1821@t5");
+                optionsBuilder.UseMySql(ConnectionString);
             }
         }
 
