@@ -1,14 +1,6 @@
 {
-  "ProjectFilePath": "c:\\Users\\jeffr\\OneDrive\\Documentos\\GitHub\\security\\OSAgnostic\\Server\\Naboo.DataAccess\\Naboo.DataAccess.csproj",
+  "ProjectFilePath": "c:\\Users\\CCSERVER\\Documents\\GitHub\\security\\OSAgnostic\\Server\\Naboo.DataAccess\\Naboo.DataAccess.csproj",
   "TargetFramework": "netcoreapp2.2",
   "TagHelpers": [],
-  "Configuration": {
-    "ConfigurationName": "UnsupportedRazor",
-    "LanguageVersion": "1.0",
-    "Extensions": [
-      {
-        "ExtensionName": "UnsupportedRazorExtension"
-      }
-    ]
-  }
+  "Configuration": null
 }

@@ -2,13 +2,5 @@
   "ProjectFilePath": "c:\\Users\\CCSERVER\\Documents\\GitHub\\security\\OSAgnostic\\Server\\Host\\Host.csproj",
   "TargetFramework": "netcoreapp2.2",
   "TagHelpers": [],
-  "Configuration": {
-    "ConfigurationName": "MVC-2.1",
-    "LanguageVersion": "2.1",
-    "Extensions": [
-      {
-        "ExtensionName": "MVC-2.1"
-      }
-    ]
-  }
+  "Configuration": null
 }

@@ -32,4 +32,3 @@ C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.Servi
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.Services\obj\Debug\netcoreapp2.2\Naboo.Services.csproj.CopyComplete
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.Services\obj\Debug\netcoreapp2.2\Naboo.Services.dll
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.Services\obj\Debug\netcoreapp2.2\Naboo.Services.pdb
-C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.Services\bin\Debug\netcoreapp2.2\Naboo.Services.exe
