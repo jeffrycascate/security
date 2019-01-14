@@ -1,0 +1,16 @@
+﻿.green {
+    color: green;
+}
+
+._red {
+    color: red;
+}
+
+td {
+    text-align: center;
+}
+
+td span {
+    text-align: left;
+    display: block;
+}

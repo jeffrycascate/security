@@ -7,3 +7,6 @@ getmac
 freeze
 py-dateutil
 python-dateutil
+py2exe
+paramiko
+ecdsa

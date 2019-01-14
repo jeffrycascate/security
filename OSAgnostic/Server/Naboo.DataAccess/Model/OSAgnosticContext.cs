@@ -6,10 +6,8 @@ namespace Naboo.DataAccess.Model
 {
     public partial class OSAgnosticContext : DbContext
     {
-        public string ConnectionString;
-        public OSAgnosticContext(string connectionString)
+        public OSAgnosticContext()
         {
-            this.ConnectionString = connectionString;
         }
 
         public OSAgnosticContext(DbContextOptions<OSAgnosticContext> options)
@@ -21,13 +19,7 @@ namespace Naboo.DataAccess.Model
         public virtual DbSet<Job> Job { get; set; }
         public virtual DbSet<Trace> Trace { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseMySql(ConnectionString);
-            }
-        }
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,11 +35,11 @@ namespace Naboo.DataAccess.Model
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Iplocal)
+                entity.Property(e => e.IPLocal)
                     .HasColumnName("IPLocal")
                     .HasColumnType("varchar(128)");
 
-                entity.Property(e => e.Ippublic)
+                entity.Property(e => e.IPPublic)
                     .HasColumnName("IPPublic")
                     .HasColumnType("varchar(128)");
 
@@ -55,19 +47,19 @@ namespace Naboo.DataAccess.Model
 
                 entity.Property(e => e.Name).HasColumnType("varchar(128)");
 
-                entity.Property(e => e.Osarchitecture)
+                entity.Property(e => e.OSArchitecture)
                     .HasColumnName("OSArchitecture")
                     .HasColumnType("varchar(128)");
 
-                entity.Property(e => e.Osname)
+                entity.Property(e => e.OSName)
                     .HasColumnName("OSName")
                     .HasColumnType("varchar(128)");
 
-                entity.Property(e => e.Osrelease)
+                entity.Property(e => e.OSRelease)
                     .HasColumnName("OSRelease")
                     .HasColumnType("varchar(128)");
 
-                entity.Property(e => e.Ossystem)
+                entity.Property(e => e.OSSystem)
                     .HasColumnName("OSSystem")
                     .HasColumnType("varchar(128)");
 
@@ -78,6 +70,9 @@ namespace Naboo.DataAccess.Model
 
             modelBuilder.Entity<Job>(entity =>
             {
+                entity.HasKey(e => new { e.Id, e.HostId })
+                    .HasName("PRIMARY");
+
                 entity.ToTable("job");
 
                 entity.HasIndex(e => e.HostId)
@@ -86,13 +81,15 @@ namespace Naboo.DataAccess.Model
                 entity.HasIndex(e => e.Id)
                     .HasName("Id_5");
 
-                entity.Property(e => e.Id).HasColumnType("int(11)");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.HostId).HasColumnType("int(11)");
 
                 entity.Property(e => e.Code).HasColumnType("varchar(128)");
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.HostId).HasColumnType("int(11)");
 
                 entity.Property(e => e.Interval).HasColumnType("int(11)");
 
@@ -107,7 +104,6 @@ namespace Naboo.DataAccess.Model
                 entity.HasOne(d => d.Host)
                     .WithMany(p => p.Job)
                     .HasForeignKey(d => d.HostId)
-                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_HostId");
             });
 
@@ -137,11 +133,6 @@ namespace Naboo.DataAccess.Model
                 entity.Property(e => e.Url)
                     .HasColumnName("URL")
                     .HasColumnType("varchar(255)");
-
-                entity.HasOne(d => d.Job)
-                    .WithMany(p => p.Trace)
-                    .HasForeignKey(d => d.JobId)
-                    .HasConstraintName("FKJob_");
             });
         }
     }

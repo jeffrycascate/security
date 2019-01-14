@@ -1,9 +1,6 @@
-# 1@@run@@5@@Job 1@@*@@*
+#1@@run@@5@@Job 1@@Win@@None
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
-# [Code][Methodo By Run][Interval][Job Name][OS Type][Target Machine] ###
-from enum import Enum
-
-
+# dasdfas Hola
 class Process(object):
     def __init__(self):
         self.Protocolo = 0
@@ -29,32 +26,11 @@ def run():
     import os
     import sys
     import time
-    from enum import Enum
     from datetime import datetime
 
-    class Severity(Enum):
-        NotAssigned = 0
-        Information = 1
-        Warning = 2
-        Error = 3
-        Critical = 4
-
-    class Result(object):
-        def __init__(self,):
-            self.Items = []
-            self.CreateDate = ""
-            self.Message = ""
-            self.Severity = Severity.NotAssigned
-            self.Successfully = False
-            self.URL = ""
-            self.IP = ""
-
-    result = Result()
-    result.CreateDate = datetime.now()
-    result.Message = "Processo de monitoreo de jobs"
+    IsWork = False
     try:
-        # IPsLocations = []
-        # http://maps.google.com/maps?z=12&t=m&q=loc:38.9419+-78.3020 format
+        #IPsLocations = []
         procs = list(psutil.process_iter())
         procs = sorted(procs, key=lambda proc: proc.name())
         proc_names = {}
@@ -63,21 +39,6 @@ def run():
 
         for proc in procs:
             if proc.name() == "powershell.exe" or proc.name() == "cmd.exe":
-                item = Result()
-                item.CreateDate = datetime.now()
-                item.URL = ""
-                item.IP = ""
-                item.Message = "Se detecto la ejecucion de un processo:'{0}' con el pid='{1}', if('pata de queso '== 'Richar'".format(
-                    proc.name(),  proc.pid)
-
-                if proc.name() == "powershell.exe":
-                    item.Severity = Severity.Critical
-                else:
-                    item.Severity = Severity.Warning
-
-                item.Successfully = True
-                result.Items.append(item)
-
                 pid = proc.pid
                 print("{2} - Se inicio el el processo {0} con del pid {1}".format(
                     proc.name(), str(proc.pid), datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
@@ -85,16 +46,17 @@ def run():
                     if c.pid == pid:
                         print(str(c))
 
-        # print("Finished log update!")
-        # print("writing new log data!")
-        result.Successfully = True
+        print("Finished log update!")
+        print("writing new log data!")
+
+        print("Called run")
+        IsWork = True
     except Exception as e:
         print("Ocurrio un error ", str(e))
-        result.Successfully = False
+        IsWork = False
 
-    return result
+    return IsWork
 
 
 # if __name__ == "__main__":
 #    ddd = run()
-#    varr = ddd

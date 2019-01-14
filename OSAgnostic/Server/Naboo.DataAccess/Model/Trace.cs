@@ -13,7 +13,5 @@ namespace Naboo.DataAccess.Model
         public DateTime? CreateDate { get; set; }
         public string Ip { get; set; }
         public int? JobId { get; set; }
-
-        public virtual Job Job { get; set; }
     }
 }
