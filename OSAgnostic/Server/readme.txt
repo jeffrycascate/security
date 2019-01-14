@@ -27,3 +27,5 @@ Notas:
      <ProjectReference Include="..\Naboo.DataAccess\Naboo.DataAccess.csproj" />
   </ItemGroup>
 3. compiar dotnet msbuild
+
+https://www.youtube.com/watch?v=0gHS3U9zMKI

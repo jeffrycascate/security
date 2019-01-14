@@ -13,7 +13,6 @@ C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\bin\De
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.dll
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.pdb
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.csproj.CopyComplete
-C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.csprojAssemblyReference.cache
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.deps.json
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.runtimeconfig.json
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.runtimeconfig.dev.json
@@ -30,3 +29,5 @@ C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Debug\net
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.dll
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.pdb
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.csproj.CopyComplete
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.exe
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.csprojAssemblyReference.cache

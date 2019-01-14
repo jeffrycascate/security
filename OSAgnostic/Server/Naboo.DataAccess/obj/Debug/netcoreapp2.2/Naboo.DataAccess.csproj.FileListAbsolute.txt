@@ -19,3 +19,4 @@ C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataA
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\obj\Debug\netcoreapp2.2\Naboo.DataAccess.AssemblyInfo.cs
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\obj\Debug\netcoreapp2.2\Naboo.DataAccess.dll
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\obj\Debug\netcoreapp2.2\Naboo.DataAccess.pdb
+C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Naboo.DataAccess\obj\Debug\netcoreapp2.2\Naboo.DataAccess.csprojAssemblyReference.cache

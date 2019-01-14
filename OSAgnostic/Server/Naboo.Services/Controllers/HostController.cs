@@ -20,7 +20,7 @@ namespace Naboo.Services.Controllers
         public ActionResult<IEnumerable<Naboo.DataAccess.Model.Host>> Get()
         {
             var dbContext = new Naboo.DataAccess.Model.OSAgnosticContext(Handler.ConnectionHandler.ConnectionString());
-            var hosts = dbContext.Host.Where(c=> c.State== true).ToList();
+            var hosts = dbContext.Host.OrderByDescending(c => c.State).ToList();
             return Ok(hosts);
         }
     }
