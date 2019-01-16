@@ -19,7 +19,6 @@ C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\bin\Debug\net
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.dll
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.pdb
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.Views.dll
-C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.csprojAssemblyReference.cache
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.csproj.CoreCompileInputs.cache
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.RazorAssemblyInfo.cache
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.RazorAssemblyInfo.cs
@@ -31,3 +30,4 @@ C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Debug\net
 C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.csproj.CopyComplete
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\bin\Debug\netcoreapp2.2\Host.exe
 C:\Users\jeffr\OneDrive\Documentos\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.csprojAssemblyReference.cache
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Debug\netcoreapp2.2\Host.csprojAssemblyReference.cache
