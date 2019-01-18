@@ -17,6 +17,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.4" />
     <ProjectReference Include="..\Naboo.DataAccess\Naboo.DataAccess.csproj" />
+    <ProjectReference Include="..\Naboo.Entities\Naboo.Entities.csproj" />
+    <ProjectReference Include="..\Naboo.Logic\Naboo.Logic.csproj" />
   </ItemGroup>
 
 </Project>

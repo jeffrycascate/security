@@ -20,7 +20,6 @@ namespace Naboo.DataAccess.Model
         public virtual DbSet<Trace> Trace { get; set; }
 
        
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Host>(entity =>
@@ -98,6 +97,8 @@ namespace Naboo.DataAccess.Model
                 entity.Property(e => e.Ostype)
                     .HasColumnName("OSType")
                     .HasColumnType("varchar(128)");
+
+                entity.Property(e => e.State).HasColumnType("bit(1)");
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 

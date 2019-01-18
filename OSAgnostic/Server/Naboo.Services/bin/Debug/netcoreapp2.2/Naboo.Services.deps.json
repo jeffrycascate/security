@@ -31,6 +31,8 @@
           "Microsoft.NETCore.App": "2.2.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.2.0",
           "Naboo.DataAccess": "1.0.0",
+          "Naboo.Entities": "1.0.0",
+          "Naboo.Logic": "1.0.0",
           "Newtonsoft.Json": "12.0.1",
           "Pomelo.EntityFrameworkCore.MySql": "2.1.4"
         },
@@ -693,6 +695,29 @@
         },
         "compile": {
           "Naboo.DataAccess.dll": {}
+        }
+      },
+      "Naboo.Entities/1.0.0": {
+        "dependencies": {
+          "Naboo.DataAccess": "1.0.0"
+        },
+        "runtime": {
+          "Naboo.Entities.dll": {}
+        },
+        "compile": {
+          "Naboo.Entities.dll": {}
+        }
+      },
+      "Naboo.Logic/1.0.0": {
+        "dependencies": {
+          "Naboo.DataAccess": "1.0.0",
+          "Naboo.Entities": "1.0.0"
+        },
+        "runtime": {
+          "Naboo.Logic.dll": {}
+        },
+        "compile": {
+          "Naboo.Logic.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -3890,6 +3915,16 @@
       "hashPath": "system.linq.queryable.4.0.1.nupkg.sha512"
     },
     "Naboo.DataAccess/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Naboo.Entities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Naboo.Logic/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

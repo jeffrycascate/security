@@ -62,18 +62,20 @@ def run():
             proc_names[p.info['pid']] = p.info['name']
 
         for proc in procs:
-            if proc.name() == "powershell.exe" or proc.name() == "cmd.exe":
+            if proc.name() == "powershell.exe" or proc.name() == "cmd.exe" :
                 item = Result()
                 item.CreateDate = datetime.now()
                 item.URL = ""
                 item.IP = ""
-                item.Message = "Se detecto la ejecucion de un processo:'{0}' con el pid='{1}', pata queso".format(
+                item.Message = "Se detecto la ejecucion de un processo:'{0}' con el pid='{1}' .... pata de queso".format(
                     proc.name(),  proc.pid)
 
                 if proc.name() == "powershell.exe":
                     item.Severity = Severity.Critical
-                else:
+                if proc.name() == "cmd.exe":
                     item.Severity = Severity.Warning
+                if proc.name() == "calc.exe":
+                    item.Severity = Severity.Information
 
                 item.Successfully = True
                 result.Items.append(item)

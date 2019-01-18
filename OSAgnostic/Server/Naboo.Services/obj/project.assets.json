@@ -4770,6 +4770,33 @@
         "runtime": {
           "bin/placeholder/Naboo.DataAccess.dll": {}
         }
+      },
+      "Naboo.Entities/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.2",
+        "dependencies": {
+          "Naboo.DataAccess": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Naboo.Entities.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Naboo.Entities.dll": {}
+        }
+      },
+      "Naboo.Logic/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.2",
+        "dependencies": {
+          "Naboo.DataAccess": "1.0.0",
+          "Naboo.Entities": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Naboo.Logic.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Naboo.Logic.dll": {}
+        }
       }
     }
   },
@@ -13036,6 +13063,16 @@
       "type": "project",
       "path": "../Naboo.DataAccess/Naboo.DataAccess.csproj",
       "msbuildProject": "../Naboo.DataAccess/Naboo.DataAccess.csproj"
+    },
+    "Naboo.Entities/1.0.0": {
+      "type": "project",
+      "path": "../Naboo.Entities/Naboo.Entities.csproj",
+      "msbuildProject": "../Naboo.Entities/Naboo.Entities.csproj"
+    },
+    "Naboo.Logic/1.0.0": {
+      "type": "project",
+      "path": "../Naboo.Logic/Naboo.Logic.csproj",
+      "msbuildProject": "../Naboo.Logic/Naboo.Logic.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -13047,6 +13084,8 @@
       "Microsoft.NETCore.App >= 2.2.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.2.0",
       "Naboo.DataAccess >= 1.0.0",
+      "Naboo.Entities >= 1.0.0",
+      "Naboo.Logic >= 1.0.0",
       "Newtonsoft.Json >= 12.0.1",
       "Pomelo.EntityFrameworkCore.MySql >= 2.1.4"
     ]
@@ -13085,6 +13124,12 @@
           "projectReferences": {
             "C:\\Users\\CCSERVER\\Documents\\GitHub\\security\\OSAgnostic\\Server\\Naboo.DataAccess\\Naboo.DataAccess.csproj": {
               "projectPath": "C:\\Users\\CCSERVER\\Documents\\GitHub\\security\\OSAgnostic\\Server\\Naboo.DataAccess\\Naboo.DataAccess.csproj"
+            },
+            "C:\\Users\\CCSERVER\\Documents\\GitHub\\security\\OSAgnostic\\Server\\Naboo.Entities\\Naboo.Entities.csproj": {
+              "projectPath": "C:\\Users\\CCSERVER\\Documents\\GitHub\\security\\OSAgnostic\\Server\\Naboo.Entities\\Naboo.Entities.csproj"
+            },
+            "C:\\Users\\CCSERVER\\Documents\\GitHub\\security\\OSAgnostic\\Server\\Naboo.Logic\\Naboo.Logic.csproj": {
+              "projectPath": "C:\\Users\\CCSERVER\\Documents\\GitHub\\security\\OSAgnostic\\Server\\Naboo.Logic\\Naboo.Logic.csproj"
             }
           }
         }

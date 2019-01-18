@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Naboo.Services.Controllers
 {
@@ -12,11 +11,10 @@ namespace Naboo.Services.Controllers
         public IConfiguration Configuration { get; }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Naboo.DataAccess.Model.Trace>> Get(int Id)
+        [Route("TraceByJobId")]
+        public ActionResult<IEnumerable<Naboo.DataAccess.Model.Trace>> TraceByJobId(int JobId)
         {
-            var dbContext = new Naboo.DataAccess.Model.OSAgnosticContext(Handler.ConnectionHandler.ConnectionString());
-            var hosts = dbContext.Trace.Where(c => c.JobId == Id).OrderBy(f => f.Id).ToList();
-            return Ok(hosts);
+            return Ok(Logic.Handler.TraceHandler.TraceByJobId(JobId));
         }
     }
 }

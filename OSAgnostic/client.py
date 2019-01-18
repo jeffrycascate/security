@@ -599,6 +599,7 @@ if __name__ == "__main__":
 
     if 'CCSERVER' == platform.uname()[1]:
         FTPTIP = "192.168.0.14"
+        MySQLHost = "192.168.0.14"
 
     ManagerFTPCheckUpdates(True)
 
@@ -609,12 +610,6 @@ if __name__ == "__main__":
     ManagerThreadHostLive(ItemHost)
 
     ManagerThreads(ItemHost)
-
-    # process = ManagerPrecess()
-    # for item in process:
-    #    example = ManagerThreadJob(item)
-    # time.sleep(5000)
-    # print('End process')
 
     bodyRAW = open(filePathConfiguration, "r").read()
 
