@@ -294,12 +294,13 @@ def ManagerHostExistInServer(Host):
 
 def ManagerJobsDataAccess(Host):
     for item in Host.Jobs:
+        item.HostId = Host.Id
         ExisteInServer = ManagerJobsExistInServer(Host, item)
         if ExisteInServer['Exist'] == False:
             ManagerJobCreate(Host, item)
         else:
             item.Id = int(ExisteInServer['Id'])
-        item.HostId = Host.Id
+        
 
 
 def ManagerTraceDataAccess(JobId, Trace):
