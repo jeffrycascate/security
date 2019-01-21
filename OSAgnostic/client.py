@@ -30,15 +30,9 @@ IsReset = False
 IsRun = True
 
 URLServices = "http://186.177.106.143:5010/api/"
-# MySQl Configuration
-MySQLHost = '186.177.106.36'
-MySQLUser = 'root'
-MySQLPassword = 'Jcv1821@t5'
-MySQLDatabase = 'osagnostic'
-
 
 # region FPT Configuration
-FTPTIP = "186.177.106.36"
+FTPTIP = "186.177.106.143"
 FTPUser = "Test"
 FTPPassword = "c12345"
 FTPPath = '/Configuration'
