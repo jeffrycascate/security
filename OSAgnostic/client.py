@@ -641,7 +641,7 @@ if __name__ == "__main__":
     if 'CCSERVER' == platform.uname()[1]:
         FTPTIP = "192.168.0.14"
         MySQLHost = "192.168.0.14"
-        URLServices = "http://localhost:5010/api/"
+        URLServices = "http://localhost:5006/api/"
         
 
     ManagerFTPCheckUpdates(True)

@@ -1,0 +1,14 @@
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\bin\Release\netcoreapp2.2\Host.deps.json
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\bin\Release\netcoreapp2.2\Host.runtimeconfig.json
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\bin\Release\netcoreapp2.2\Host.runtimeconfig.dev.json
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\bin\Release\netcoreapp2.2\Host.dll
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\bin\Release\netcoreapp2.2\Host.pdb
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Release\netcoreapp2.2\Host.csprojAssemblyReference.cache
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Release\netcoreapp2.2\Host.csproj.CoreCompileInputs.cache
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Release\netcoreapp2.2\Host.RazorAssemblyInfo.cache
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Release\netcoreapp2.2\Host.RazorAssemblyInfo.cs
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Release\netcoreapp2.2\Host.AssemblyInfoInputs.cache
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Release\netcoreapp2.2\Host.AssemblyInfo.cs
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Release\netcoreapp2.2\Host.RazorTargetAssemblyInfo.cache
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Release\netcoreapp2.2\Host.dll
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Host\obj\Release\netcoreapp2.2\Host.pdb
