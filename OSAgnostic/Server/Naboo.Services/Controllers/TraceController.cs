@@ -16,5 +16,12 @@ namespace Naboo.Services.Controllers
         {
             return Ok(Logic.Handler.TraceHandler.TraceByJobId(JobId));
         }
+
+        [HttpPost]
+        [Route("Add")]
+        public ActionResult<bool> Add(Naboo.Entities.Trace item)
+        {
+            return Ok(Naboo.Logic.Handler.TraceHandler.Add(item));
+        }
     }
 }

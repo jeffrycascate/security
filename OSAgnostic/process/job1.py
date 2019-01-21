@@ -29,28 +29,26 @@ def run():
     import os
     import sys
     import time
-    from enum import Enum
     from datetime import datetime
+    import json
 
-    class Severity(Enum):
-        NotAssigned = 0
-        Information = 1
-        Warning = 2
-        Error = 3
-        Critical = 4
 
-    class Result(object):
+    class Trace(object):
         def __init__(self,):
             self.Items = []
-            self.CreateDate = ""
             self.Message = ""
-            self.Severity = Severity.NotAssigned
+            self.Severity = "NotAssigned"
             self.Successfully = False
             self.URL = ""
             self.IP = ""
+            self.JobId = 0 
+        
+        def ConvertToJSON(self):
+            return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
 
-    result = Result()
-    result.CreateDate = datetime.now()
+    result = Trace()
+    result.CreateDate = datetime.utcnow().strftime('%Y/%m/%d %H:%M:%S:%f')
     result.Message = "Processo de monitoreo de jobs"
     try:
         # IPsLocations = []
@@ -62,20 +60,20 @@ def run():
             proc_names[p.info['pid']] = p.info['name']
 
         for proc in procs:
-            if proc.name() == "powershell.exe" or proc.name() == "cmd.exe" :
-                item = Result()
-                item.CreateDate = datetime.now()
+            if proc.name() == "powershell.exe" or proc.name() == "cmd.exe" or proc.name() == "Calculator.exe" :
+                item = Trace()
+                item.CreateDate = datetime.utcnow().strftime('%Y/%m/%d %H:%M:%S:%f')
                 item.URL = ""
                 item.IP = ""
                 item.Message = "Se detecto la ejecucion de un processo:'{0}' con el pid='{1}' .... pata de queso".format(
                     proc.name(),  proc.pid)
 
                 if proc.name() == "powershell.exe":
-                    item.Severity = Severity.Critical
+                    item.Severity = "Critical"
                 if proc.name() == "cmd.exe":
-                    item.Severity = Severity.Warning
-                if proc.name() == "calc.exe":
-                    item.Severity = Severity.Information
+                    item.Severity = "Warning"
+                if proc.name() == "Calculator.exe":
+                    item.Severity = "Information"
 
                 item.Successfully = True
                 result.Items.append(item)
@@ -98,5 +96,5 @@ def run():
 
 
 # if __name__ == "__main__":
-#    ddd = run()
-#    varr = ddd
+#     ddd = run()
+#     varr = ddd

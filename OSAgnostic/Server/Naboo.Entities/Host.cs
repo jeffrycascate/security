@@ -23,5 +23,8 @@ namespace Naboo.Entities
         public  List<Job> Job { get; set; }
         public int JobActive { get; set; }
         public int JobInaActive { get; set; }
+
+        public OS OS { get; set; }
+
     }
 }

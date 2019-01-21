@@ -3,11 +3,13 @@ import threading
 import time
 import os
 from datetime import datetime
-from ClientMySQL import *
+import requests
+import json
 #endregion
 
 #region Configuration
 filePathConfiguration = os.path.join(os.getcwd(), "Server.config")
+URLServices = "http://localhost:5006/api/"
 interval = 30
 
 #MySQl Configuration
@@ -20,12 +22,19 @@ MySQLDatabase = 'osagnostic'
 
 #region Methods
 def  UpdateHosts():
-    db = CreateInstance(Host= MySQLHost, User= MySQLUser, Password= MySQLPassword, Database= MySQLDatabase)
-    query = "update host set State = b'0' where ADDTIME(updatedate , '0:00:10') <  SYSDATE();"
-    parameters = ()
-    ExisteInServer = ExecuteCommand(db, query, parameters)
-    db.close()
-    return ExisteInServer
+    result = False
+    try:
+        url = URLServices + 'Host/StateChangeServer'
+        headers = requests.utils.default_headers()
+        headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
+        ret = requests.get(url, headers=headers, verify=False)
+        body = json.loads(ret.content)
+        result = body
+    except Exception as e:
+        print("Ocurrio un error al tratar de extrar la ip local ",
+              ", Original Exception: ", str(e))
+    return result
+
 #endregion
 
 if __name__ == "__main__":

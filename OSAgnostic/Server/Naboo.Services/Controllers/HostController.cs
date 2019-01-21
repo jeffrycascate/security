@@ -16,5 +16,34 @@ namespace Naboo.Services.Controllers
         {
             return Ok(Naboo.Logic.Handler.HostHandler.All());
         }
+
+        [HttpGet]
+        [Route("Exist")]
+        public ActionResult<bool> Exist(string Name)
+        {
+            return Ok(Naboo.Logic.Handler.HostHandler.Exist(Name));
+        }
+
+        [HttpPost]
+        [Route("Add")]
+        public ActionResult<bool> Add(Naboo.Entities.Host item)
+        {
+            return Ok(Naboo.Logic.Handler.HostHandler.Add(item));
+        }
+
+        [HttpGet]
+        [Route("StateChange")]
+        public ActionResult<bool> StateChange(int Id, bool State)
+        {
+            return Ok(Naboo.Logic.Handler.HostHandler.StateChange(Id, State));
+        }
+
+        [HttpGet]
+        [Route("StateChangeServer")]
+        public ActionResult<bool> StateChangeServer()
+        {
+            return Ok(Naboo.Logic.Handler.HostHandler.StateChangeServer());
+        }
+
     }
 }

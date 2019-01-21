@@ -17,6 +17,12 @@
         if (value === 'Critical') {
             htmlValue = '<i class="fas fa-radiation-alt"></i>';
         }
+
+        if (value === 'Information') {
+            htmlValue = '<i class="fas fa-info-circle"></i>';
+        }
+
+        
         return htmlValue;
     };
 

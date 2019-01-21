@@ -9,6 +9,8 @@ https://www.python.org/downloads/release/python-370/
     
     si falla debes de tener instalado este 
         apt install libmysqlclient-dev python-mysqldb
+        sudo apt-get install build-essential libssl-dev libffi-dev python3-dev
+        sudo apt-get install unixodbc-dev
 
 TODO:
     https://pypi.org/project/PyMsgBox/ - para mensages

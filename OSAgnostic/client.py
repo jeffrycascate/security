@@ -14,8 +14,7 @@ from pathlib import Path
 from ftplib import FTP
 from datetime import datetime
 from getmac import get_mac_address
-from ClientMySQL import *
-
+import jsonpickle
 
 # endregion
 
@@ -30,6 +29,7 @@ filePathConfiguration = os.path.join(os.getcwd(), "Client.config")
 IsReset = False
 IsRun = True
 
+URLServices = "http://localhost:5006/api/"
 # MySQl Configuration
 MySQLHost = '186.177.106.36'
 MySQLUser = 'root'
@@ -225,103 +225,118 @@ def ManagerFTPCheckUpdates(IsFirts):
 
 
 def ManagerJobsExistInServer(Host, Job):
-    db = CreateInstance(Host=MySQLHost, User=MySQLUser,
-                        Password=MySQLPassword, Database=MySQLDatabase)
-    query = "Select ID From Job Where Code = '{0}' and HostId = {1}".format(
-        Job.Code, Host.Id)
-    parameters = ()
-    ExisteInServer = ExecuteCommand(db, query, parameters)
-    db.close()
-    return ExisteInServer
+    result = ""
+    try:
+        url = URLServices + \
+            'Job/Exist?Code={}&HostId={}'.format(Job.Code, Host.Id)
+        headers = requests.utils.default_headers()
+        headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
+        ret = requests.get(url, headers=headers, verify=False)
+        body = json.loads(ret.content)
+        result = body
+    except Exception as e:
+        print("Ocurrio un error al tratar de extrar la ip local ",
+              ", Original Exception: ", str(e))
+    return result
 
 
 def ManagerJobCreate(Host, Job):
-    db = CreateInstance(Host=MySQLHost, User=MySQLUser,
-                        Password=MySQLPassword, Database=MySQLDatabase)
-    query = "Insert Into Job( `Code`, `Name`, `Interval`, `HostId`, `OSType`, `CreateDate`, `UpdateDate` ) " \
-        " VALUES( '{0}','{1}',   {2},    {3},  '{4}' , SYSDATE(), SYSDATE());".format(
-            Job.Code, Job.Name, Job.Interval,  Host.Id, Job.OSType)
-    parameters = ()
-    result = ExecuteCommand(db, query, parameters)
-    if result.Successfully:
-        Job.Id = result.LastRowId
-    db.close()
-
-
-def ManagerHostExistInServer(Host):
-    db = CreateInstance(Host=MySQLHost, User=MySQLUser,
-                        Password=MySQLPassword, Database=MySQLDatabase)
-    query = "Select ID From Host Where Name = '{0}'".format(Host.Name)
-    parameters = ()
-    ExisteInServer = ExecuteCommand(db, query, parameters)
-    db.close()
-    return ExisteInServer
-
-
-def ManagerHostCreate(Host):
-    db = CreateInstance(Host=MySQLHost, User=MySQLUser,
-                        Password=MySQLPassword, Database=MySQLDatabase)
-    query = "INSERT INTO Host( Name, IPLocal, IPPublic, MacAddress, State, CreateDate, UpdateDate, OSName, OSSystem, OSRelease, OSArchitecture ) " \
-        " VALUES ('{0}', '{1}','{2}', '{3}', {4}, SYSDATE(), SYSDATE(), '{5}', '{6}', '{7}', '{8}' );".format(
-            Host.Name, Host.IPLocal, Host.IPPublic, Host.MacAddress, 1, Host.OS.Name, Host.OS.System, Host.OS.Release, Host.OS.Architecture)
-    parameters = ()
-    result = ExecuteCommand(db, query, parameters)
-    if result.Successfully:
-        Host.Id = result.LastRowId
-    db.close()
+    result = ""
+    try:
+        url = URLServices + 'Job/Add'
+        headers = requests.utils.default_headers()
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        Job.HostId = Host.Id
+        ret = requests.post(url, Job.ConvertToJSON(),
+                            headers=headers, verify=False)
+        body = json.loads(ret.content)
+        result = body
+    except Exception as e:
+        print("Ocurrio un error al tratar de extrar la ip local ",
+              ", Original Exception: ", str(e))
+    return result
 
 
 def ManagerHostDataAccess(Host):
     ExisteInServer = ManagerHostExistInServer(Host)
-    if ExisteInServer.Successfully:
-        if ExisteInServer.RowCount == 0:
-            ManagerHostCreate(Host)
-        else:
-            Host.Id = int(ExisteInServer.Rows[0][0])
-        ManagerJobsDataAccess(Host)
+    if ExisteInServer['Exist'] == False:
+        ManagerHostCreate(Host)
+    else:
+        Host.Id = int(ExisteInServer['Id'])
+    ManagerJobsDataAccess(Host)
+
+
+def ManagerHostCreate(Host):
+    result = False
+    try:
+        url = URLServices + 'Host/Add'
+        headers = requests.utils.default_headers()
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        ret = requests.post(url, Host.ConvertToJSON(),
+                            headers=headers, verify=False)
+        body = json.loads(ret.content)
+        result = body
+        Host.Id = int(result['Id'])
+    except Exception as e:
+        print("Ocurrio un error al tratar de extrar la ip local ",
+              ", Original Exception: ", str(e))
+    return result
+
+
+def ManagerHostExistInServer(Host):
+    result = False
+    try:
+        url = URLServices + 'Host/Exist?Name=' + Host.Name
+        headers = requests.utils.default_headers()
+        headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
+        ret = requests.get(url, headers=headers, verify=False)
+        body = json.loads(ret.content)
+        result = body
+    except Exception as e:
+        print("Ocurrio un error al tratar de extrar la ip local ",
+              ", Original Exception: ", str(e))
+    return result
 
 
 def ManagerJobsDataAccess(Host):
     for item in Host.Jobs:
         ExisteInServer = ManagerJobsExistInServer(Host, item)
-        if ExisteInServer.Successfully:
-            if ExisteInServer.RowCount == 0:
-                ManagerJobCreate(Host, item)
-            else:
-                item.Id = int(ExisteInServer.Rows[0][0])
-            # Make last load
+        if ExisteInServer['Exist'] == False:
+            ManagerJobCreate(Host, item)
+        else:
+            item.Id = int(ExisteInServer['Id'])
 
 
-def ManagerTraceDataAccess(JobId, trace):
+def ManagerTraceDataAccess(JobId, Trace):
+    result = ""
     try:
-        if trace != None:
-            db = CreateInstance(Host=MySQLHost, User=MySQLUser,
-                                Password=MySQLPassword, Database=MySQLDatabase)
-            query = "INSERT INTO trace(`Message`, `Severity`, `Successfully`, `URL`, `CreateDate`, `IP`, `JobId`) VALUES (%s, %s, %s , %s, %s, %s, %s);"
-            parameters = (trace.Message, trace.Severity.name,
-                          trace.Successfully, trace.URL, trace.CreateDate, trace.IP, JobId)
-            result = ExecuteCommand(db, query, parameters)
-            if result.Successfully:
-                Host.Id = result.LastRowId
-            db.close()
+        if Trace != None:
+            url = URLServices + 'Trace/Add'
+            headers = requests.utils.default_headers()
+            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            Trace.JobId = JobId
+            
+            ret = requests.post(url, jsonpickle.encode(Trace),
+                                headers=headers, verify=False)
+            body = json.loads(ret.content)
+            result = body
     except Exception as e:
         print("Ocurrio un error ManagerTraceDataAccess, Original Exception: ", str(e))
 
 
 def ManagerHostState(Host, State):
-    db = CreateInstance(Host=MySQLHost, User=MySQLUser,
-                        Password=MySQLPassword, Database=MySQLDatabase)
-
-    value = 0
-    if State == True:
-        value = 1
-
-    query = "UPDATE host SET STATE = b'{0}' WHERE NAME = '{1}'".format(
-        value, Host.Name)
-    parameters = ()
-    ExisteInServer = ExecuteCommand(db, query, parameters)
-    db.close()
-    return ExisteInServer
+    result = False
+    try:
+        url = URLServices + 'Host/StateChange?Id={0}&State={1}'.format(Host.Id, State)
+        headers = requests.utils.default_headers()
+        headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
+        ret = requests.get(url, headers=headers, verify=False)
+        body = json.loads(ret.content)
+        result = body
+    except Exception as e:
+        print("Ocurrio un error al tratar de extrar la ip local ",
+              ", Original Exception: ", str(e))
+    return result
 
 # endregion
 
@@ -336,6 +351,10 @@ class OS(object):
         self.Release = ""
         self.Architecture = ""
 
+    def ConvertToJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
+
 
 class Job(object):
     def __init__(self):
@@ -349,10 +368,12 @@ class Job(object):
         self.OSType = ""
         self.Targets = []
 
+    def ConvertToJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
+
 
 class Host(object):
-    Jobs = []
-    OS = OS()
 
     def __init__(self):
         self.Id = 0
@@ -362,6 +383,26 @@ class Host(object):
         self.MacAddress = ""
         self.Jobs = []
         self.OS = OS()
+
+    def ConvertToJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
+
+
+class Trace(object):
+
+    def __init__(self):
+        self.Id = 0
+        self.Message = ""
+        self.Severity = "NotAssigned"
+        self.Successfully = False
+        self.URL = ""
+        self.IP = ""
+        self.JobId = 0 
+
+    def ConvertToJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
 
 
 class ManagerThreadJob(object):
@@ -469,7 +510,7 @@ class ManagerThreadHostLive(Host):
 
             try:
                 result = ManagerHostState(self.Host, True)
-                if result.Successfully:
+                if result == True:
                     print(
                         "A signal is sent to the active server for the host '{0}', to: {1}".format(self.Host.Name,  datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
             except Exception as e:

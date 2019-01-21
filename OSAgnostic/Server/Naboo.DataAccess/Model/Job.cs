@@ -10,7 +10,7 @@ namespace Naboo.DataAccess.Model
         public string Name { get; set; }
         public int? Interval { get; set; }
         public int HostId { get; set; }
-        public string Ostype { get; set; }
+        public string OSType { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
         public bool? State { get; set; }

@@ -94,7 +94,7 @@ namespace Naboo.DataAccess.Model
 
                 entity.Property(e => e.Name).HasColumnType("varchar(255)");
 
-                entity.Property(e => e.Ostype)
+                entity.Property(e => e.OSType)
                     .HasColumnName("OSType")
                     .HasColumnType("varchar(128)");
 
