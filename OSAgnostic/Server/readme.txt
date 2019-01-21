@@ -29,3 +29,9 @@ Notas:
 3. compiar dotnet msbuild
 
 https://www.youtube.com/watch?v=0gHS3U9zMKI
+
+Publish Services
+1. Instlar el runtime 
+    https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-2.2.1-windows-hosting-bundle-installer
+2. Compilar el projecto en el folder 
+    dotnet publish --framework netcoreapp2.2 --output "C:\inetpub\Naboo" --configuration Release

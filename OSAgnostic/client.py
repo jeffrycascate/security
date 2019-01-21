@@ -29,7 +29,7 @@ filePathConfiguration = os.path.join(os.getcwd(), "Client.config")
 IsReset = False
 IsRun = True
 
-URLServices = "http://localhost:5006/api/"
+URLServices = "http://186.177.106.143:5010/api/"
 # MySQl Configuration
 MySQLHost = '186.177.106.36'
 MySQLUser = 'root'
@@ -160,7 +160,7 @@ def ManagerHost():
         if itemJob.OSType == '*':
             AllowSO = True
         else:
-            if itemJob.OSType.lower() in item.OS.Name.lower():
+            if itemJob.OSType.lower() in item.OS.System.lower():
                 AllowSO = True
 
         # Check if job is that allowed by name host
@@ -641,6 +641,8 @@ if __name__ == "__main__":
     if 'CCSERVER' == platform.uname()[1]:
         FTPTIP = "192.168.0.14"
         MySQLHost = "192.168.0.14"
+        URLServices = "http://localhost:5010/api/"
+        
 
     ManagerFTPCheckUpdates(True)
 

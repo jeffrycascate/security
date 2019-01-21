@@ -1,0 +1,12 @@
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.Entities\bin\Release\netcoreapp2.2\Naboo.Entities.deps.json
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.Entities\bin\Release\netcoreapp2.2\Naboo.Entities.dll
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.Entities\bin\Release\netcoreapp2.2\Naboo.Entities.pdb
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.Entities\bin\Release\netcoreapp2.2\Naboo.DataAccess.dll
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.Entities\bin\Release\netcoreapp2.2\Naboo.DataAccess.pdb
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.Entities\obj\Release\netcoreapp2.2\Naboo.Entities.csprojAssemblyReference.cache
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.Entities\obj\Release\netcoreapp2.2\Naboo.Entities.csproj.CoreCompileInputs.cache
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.Entities\obj\Release\netcoreapp2.2\Naboo.Entities.AssemblyInfoInputs.cache
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.Entities\obj\Release\netcoreapp2.2\Naboo.Entities.AssemblyInfo.cs
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.Entities\obj\Release\netcoreapp2.2\Naboo.Entities.csproj.CopyComplete
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.Entities\obj\Release\netcoreapp2.2\Naboo.Entities.dll
+C:\Users\CCSERVER\Documents\GitHub\security\OSAgnostic\Server\Naboo.Entities\obj\Release\netcoreapp2.2\Naboo.Entities.pdb
