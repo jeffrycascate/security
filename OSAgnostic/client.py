@@ -299,6 +299,7 @@ def ManagerJobsDataAccess(Host):
             ManagerJobCreate(Host, item)
         else:
             item.Id = int(ExisteInServer['Id'])
+        item.HostId = Host.Id
 
 
 def ManagerTraceDataAccess(JobId, Trace):
@@ -361,6 +362,7 @@ class Job(object):
         self.Name = ""
         self.OSType = ""
         self.Targets = []
+        self.HostId = 0
 
     def ConvertToJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__,
@@ -551,7 +553,7 @@ class ManagerThreadByJob(Host, Job):
                             print(
                                 "Ejecucion del modulo {0}".format(self.Job.Name))
                             for item in callResult.Items:
-                                ManagerTraceDataAccess(self.Job.Id, item)
+                                ManagerTraceDataAccess(self.Job.HostId, item)
                         else:
                             print(
                                 "Fallo la ejecucion del modulo {0}".format(self.Job.Name))
