@@ -554,7 +554,7 @@ class ManagerThreadByJob(Host, Job):
                             print(
                                 "Ejecucion del modulo {0}".format(self.Job.Name))
                             for item in callResult.Items:
-                                ManagerTraceDataAccess(self.Job.HostId, item)
+                                ManagerTraceDataAccess(self.Job.Id, item)
                         else:
                             print(
                                 "Fallo la ejecucion del modulo {0}".format(self.Job.Name))

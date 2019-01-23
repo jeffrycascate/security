@@ -65,7 +65,7 @@ def run():
                 item.CreateDate = datetime.utcnow().strftime('%Y/%m/%d %H:%M:%S:%f')
                 item.URL = ""
                 item.IP = ""
-                item.Message = "Se detecto la ejecucion de un processo:'{0}' con el pid='{1}' .... pata de queso".format(
+                item.Message = "Se detecto la ejecucion de un processo:'{0}' con el pid='{1}', pata de queso!!!!!!".format(
                     proc.name(),  proc.pid)
 
                 if proc.name() == "powershell.exe":
