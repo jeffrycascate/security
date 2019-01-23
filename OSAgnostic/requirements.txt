@@ -1,8 +1,6 @@
 pyodbc
 psutil
 pathlib
-mysql-connector-python
-mysqlclient
 requests
 getmac
 freeze
