@@ -31,7 +31,13 @@ def run():
     import time
     from datetime import datetime
     import json
+    import requests
 
+    class locator(object):
+        def __init__(self):
+            self.latitude = ""
+            self.longitude = ""
+            self.Successfully = False
 
     class Trace(object):
         def __init__(self,):
@@ -46,6 +52,22 @@ def run():
         def ConvertToJSON(self):
             return json.dumps(self, default=lambda o: o.__dict__,
                           sort_keys=True, indent=4)
+    
+    def LocatoIP(Ip):
+        item = locator()
+        try:
+            url = "http://api.ipstack.com/{0}?access_key=842a3f2afb39f85f84991e39c4033bf1".format(
+                Ip)
+            headers = requests.utils.default_headers()
+            headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
+            ret = requests.get(url, headers=headers, verify=False)
+            body = json.loads(ret.content)
+            item.latitude = body['latitude']
+            item.longitude = body['longitude']
+            item.Successfully = True
+        except Exception as e:
+            item.Successfully = False
+        return item
 
     result = Trace()
     result.CreateDate = datetime.utcnow().strftime('%Y/%m/%d %H:%M:%S:%f')
@@ -60,12 +82,12 @@ def run():
             proc_names[p.info['pid']] = p.info['name']
 
         for proc in procs:
-            if proc.name() == "powershell.exe" or proc.name() == "cmd.exe" or proc.name() == "Calculator.exe" :
+            if proc.name() == "powershell.exe" or proc.name() == "cmd.exe" or proc.name() == "Calculator.exe":
                 item = Trace()
                 item.CreateDate = datetime.utcnow().strftime('%Y/%m/%d %H:%M:%S:%f')
                 item.URL = ""
                 item.IP = ""
-                item.Message = "Se detecto la ejecucion de un processo:'{0}' con el pid='{1}', pata de queso!!!!!!".format(
+                item.Message = "Se detecto la ejecucion de un processo:'{0}' con el pid='{1}' .... pata de queso".format(
                     proc.name(),  proc.pid)
 
                 if proc.name() == "powershell.exe":
@@ -76,17 +98,19 @@ def run():
                     item.Severity = "Information"
 
                 item.Successfully = True
-                result.Items.append(item)
 
                 pid = proc.pid
                 print("{2} - Se inicio el el processo {0} con del pid {1}".format(
                     proc.name(), str(proc.pid), datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
                 for c in psutil.net_connections(kind='inet'):
                     if c.pid == pid:
-                        print(str(c))
-
-        # print("Finished log update!")
-        # print("writing new log data!")
+                        item.IP = c.raddr[0]
+                        if item.IP is not None:
+                            loc = LocatoIP(item.IP)
+                            if loc.Successfully:
+                                item.URL = 'https://www.google.com/maps?q={0},{1}'.format(
+                                    loc.latitude, loc.longitude)
+                result.Items.append(item)
         result.Successfully = True
     except Exception as e:
         print("Ocurrio un error ", str(e))
