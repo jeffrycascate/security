@@ -245,6 +245,7 @@ def ManagerJobCreate(Host, Job):
                             headers=headers, verify=False)
         body = json.loads(ret.content)
         result = body
+        Job.Id = body['Id']
     except Exception as e:
         print("Ocurrio un error al tratar de extrar la ip local ",
               ", Original Exception: ", str(e))
@@ -312,7 +313,7 @@ def ManagerTraceDataAccess(JobId, Trace):
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
             Trace.JobId = JobId
             
-            ret = requests.post(url, jsonpickle.encode(Trace),
+            ret = requests.post(url, json.dumps(vars(Trace), sort_keys=True, indent=4),
                                 headers=headers, verify=False)
             body = json.loads(ret.content)
             result = body
